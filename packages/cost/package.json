@@ -1,0 +1,58 @@
+{
+  "name": "@maiife-ai-pub/cost",
+  "version": "0.1.0",
+  "description": "AI spend calculator + optimizer — unified cost report across vendors",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "bin": {
+    "maiife-cost": "./dist/cli/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "lint": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "commander": "^14.0.3",
+    "chalk": "^5.6.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0",
+    "vitest": "^3.1.0"
+  },
+  "license": "Apache-2.0",
+  "author": "Maiife <contact@maiife.ai> (https://maiife.ai)",
+  "keywords": [
+    "maiife",
+    "ai-governance",
+    "cost",
+    "ai-cost",
+    "spend",
+    "budget",
+    "llm",
+    "mcp"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sakthivelchan89/scan_your_ai_toolkit",
+    "directory": "packages/cost"
+  },
+  "homepage": "https://github.com/sakthivelchan89/scan_your_ai_toolkit/tree/main/packages/cost"
+}

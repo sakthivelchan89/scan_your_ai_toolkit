@@ -1,0 +1,42 @@
+{
+  "name": "@maiife-ai-pub/shared",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "lint": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0"
+  },
+  "license": "Apache-2.0",
+  "author": "Maiife <contact@maiife.ai> (https://maiife.ai)",
+  "keywords": [
+    "maiife",
+    "ai-governance",
+    "shared",
+    "utilities"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sakthivelchan89/scan_your_ai_toolkit",
+    "directory": "packages/shared"
+  },
+  "homepage": "https://github.com/sakthivelchan89/scan_your_ai_toolkit/tree/main/packages/shared"
+}

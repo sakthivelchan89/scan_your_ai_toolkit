@@ -1,0 +1,56 @@
+{
+  "name": "@maiife-ai-pub/ai-journal",
+  "version": "0.1.0",
+  "description": "Personal AI Usage Diary — track how you use AI and get reflective insights",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "bin": {
+    "maiife-ai-journal": "./dist/cli/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "lint": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "commander": "^14.0.3",
+    "chalk": "^5.6.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0",
+    "vitest": "^3.1.0"
+  },
+  "license": "Apache-2.0",
+  "author": "Maiife <contact@maiife.ai> (https://maiife.ai)",
+  "keywords": [
+    "maiife",
+    "ai-governance",
+    "ai-journal",
+    "ai-usage",
+    "diary",
+    "reflection",
+    "productivity"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sakthivelchan89/scan_your_ai_toolkit",
+    "directory": "packages/ai-journal"
+  },
+  "homepage": "https://github.com/sakthivelchan89/scan_your_ai_toolkit/tree/main/packages/ai-journal"
+}
