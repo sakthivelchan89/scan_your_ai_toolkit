@@ -1,6 +1,6 @@
 {
   "name": "@maiife-ai-pub/probe",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "AI environment scanner — discover IDE extensions, MCP servers, agent frameworks, API keys, local models",
   "type": "module",
   "main": "./dist/index.js",

@@ -1,6 +1,6 @@
 {
   "name": "@maiife-ai-pub/trace",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Agent workflow tracer — trace, view, and analyze agent execution spans",
   "type": "module",
   "main": "./dist/index.js",

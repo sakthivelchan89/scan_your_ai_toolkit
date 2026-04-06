@@ -1,0 +1,97 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-07-09/server.schema.json",
+  "name": "io.github.sakthivelchan89/scan_your_ai_toolkit",
+  "description": "Open-source AI governance toolkit — 12 MCP servers for scanning, auditing, and managing your AI environment",
+  "status": "active",
+  "repository": {
+    "url": "https://github.com/sakthivelchan89/scan_your_ai_toolkit",
+    "source": "github"
+  },
+  "version": "0.1.1",
+  "packages": [
+    {
+      "registryType": "npm",
+      "registryBaseUrl": "https://registry.npmjs.org",
+      "identifier": "@maiife-ai-pub/probe",
+      "version": "0.1.1",
+      "transport": { "type": "stdio" }
+    },
+    {
+      "registryType": "npm",
+      "registryBaseUrl": "https://registry.npmjs.org",
+      "identifier": "@maiife-ai-pub/mcp-audit",
+      "version": "0.1.1",
+      "transport": { "type": "stdio" }
+    },
+    {
+      "registryType": "npm",
+      "registryBaseUrl": "https://registry.npmjs.org",
+      "identifier": "@maiife-ai-pub/mcp-doctor",
+      "version": "0.1.1",
+      "transport": { "type": "stdio" }
+    },
+    {
+      "registryType": "npm",
+      "registryBaseUrl": "https://registry.npmjs.org",
+      "identifier": "@maiife-ai-pub/eval",
+      "version": "0.1.1",
+      "transport": { "type": "stdio" }
+    },
+    {
+      "registryType": "npm",
+      "registryBaseUrl": "https://registry.npmjs.org",
+      "identifier": "@maiife-ai-pub/prompt-score",
+      "version": "0.1.1",
+      "transport": { "type": "stdio" }
+    },
+    {
+      "registryType": "npm",
+      "registryBaseUrl": "https://registry.npmjs.org",
+      "identifier": "@maiife-ai-pub/prompt-craft",
+      "version": "0.1.1",
+      "transport": { "type": "stdio" }
+    },
+    {
+      "registryType": "npm",
+      "registryBaseUrl": "https://registry.npmjs.org",
+      "identifier": "@maiife-ai-pub/cost",
+      "version": "0.1.1",
+      "transport": { "type": "stdio" }
+    },
+    {
+      "registryType": "npm",
+      "registryBaseUrl": "https://registry.npmjs.org",
+      "identifier": "@maiife-ai-pub/model-match",
+      "version": "0.1.1",
+      "transport": { "type": "stdio" }
+    },
+    {
+      "registryType": "npm",
+      "registryBaseUrl": "https://registry.npmjs.org",
+      "identifier": "@maiife-ai-pub/ai-stack",
+      "version": "0.1.1",
+      "transport": { "type": "stdio" }
+    },
+    {
+      "registryType": "npm",
+      "registryBaseUrl": "https://registry.npmjs.org",
+      "identifier": "@maiife-ai-pub/context-sync",
+      "version": "0.1.1",
+      "transport": { "type": "stdio" }
+    },
+    {
+      "registryType": "npm",
+      "registryBaseUrl": "https://registry.npmjs.org",
+      "identifier": "@maiife-ai-pub/sub-audit",
+      "version": "0.1.1",
+      "transport": { "type": "stdio" }
+    },
+    {
+      "registryType": "npm",
+      "registryBaseUrl": "https://registry.npmjs.org",
+      "identifier": "@maiife-ai-pub/trace",
+      "version": "0.1.1",
+      "transport": { "type": "stdio" }
+    }
+  ]
+}

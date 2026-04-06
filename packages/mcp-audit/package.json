@@ -1,6 +1,6 @@
 {
   "name": "@maiife-ai-pub/mcp-audit",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "MCP server security scanner — score configurations on permissions, data sensitivity, blast radius",
   "type": "module",
   "main": "./dist/index.js",
@@ -14,7 +14,11 @@
   "bin": {
     "maiife-mcp-audit": "./dist/cli/index.js"
   },
-  "files": ["dist", "README.md", "LICENSE"],
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "lint": "tsc --noEmit",
@@ -31,8 +35,18 @@
     "vitest": "^3.1.0"
   },
   "license": "Apache-2.0",
-  "keywords": ["maiife", "mcp", "security", "audit", "scanner", "model-context-protocol", "ai-governance"],
-  "engines": { "node": ">=18" },
+  "keywords": [
+    "maiife",
+    "mcp",
+    "security",
+    "audit",
+    "scanner",
+    "model-context-protocol",
+    "ai-governance"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
   "author": "Maiife <contact@maiife.ai> (https://maiife.ai)",
   "repository": {
     "type": "git",

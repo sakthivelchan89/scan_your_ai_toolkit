@@ -66,4 +66,9 @@ program
     await startMCPServer();
   });
 
-program.parse();
+// If no arguments, default to MCP server (for npx/Glama/Claude Desktop)
+if (process.argv.length <= 2) {
+  import('../mcp/index.js').then(m => m.startMCPServer());
+} else {
+  program.parse();
+}

@@ -1,6 +1,6 @@
 {
   "name": "@maiife-ai-pub/weekly-ai-report",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Your AI Week in Review — Spotify Wrapped for your AI usage, weekly",
   "type": "module",
   "main": "./dist/index.js",
@@ -14,7 +14,11 @@
   "bin": {
     "maiife-weekly-ai-report": "./dist/cli/index.js"
   },
-  "files": ["dist", "README.md", "LICENSE"],
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "lint": "tsc --noEmit",
@@ -32,8 +36,18 @@
   },
   "license": "Apache-2.0",
   "author": "Maiife <contact@maiife.ai> (https://maiife.ai)",
-  "keywords": ["maiife", "weekly-report", "ai-usage", "wrapped", "analytics", "ai-journal", "ai-governance"],
-  "engines": { "node": ">=18" },
+  "keywords": [
+    "maiife",
+    "weekly-report",
+    "ai-usage",
+    "wrapped",
+    "analytics",
+    "ai-journal",
+    "ai-governance"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/sakthivelchan89/scan_your_ai_toolkit",
