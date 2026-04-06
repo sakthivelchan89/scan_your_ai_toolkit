@@ -1,4 +1,4 @@
-# 🛡️ Maiife Toolkit
+# 🛡️ Scan Your AI Toolkit
 
 Open-source AI governance tools. Each works standalone as an MCP server or CLI — together they form a governance mesh.
 
@@ -18,18 +18,18 @@ Built by [Maiife](https://maiife.ai) — Enterprise AI Control Plane.
 | `@maiife-ai-pub/shared` | Shared types and formatters used by all toolkit packages | ✅ |
 | `@maiife-ai-pub/probe` | AI environment scanner — discover IDE extensions, MCP servers, agent frameworks, API keys, local models | ✅ |
 | `@maiife-ai-pub/mcp-audit` | MCP server security scanner — score configs on permissions, data sensitivity, blast radius | ✅ |
-| `@maiife-ai-pub/ai-stack` | "What's Your AI Stack?" — shareable profile card of your AI toolkit | 🚧 |
-| `@maiife-ai-pub/mcp-doctor` | MCP health check & auto-fixer — brew doctor for your MCP setup | 🚧 |
-| `@maiife-ai-pub/ai-journal` | Personal AI usage diary — track how you use AI, get reflective insights | 🚧 |
-| `@maiife-ai-pub/context-sync` | Cross-tool AI memory sync — one context.json, synced to Cursor, Claude, MCP | 🚧 |
-| `@maiife-ai-pub/prompt-score` | Prompt quality analyzer — score, improve, and lint your AI prompts | 🚧 |
-| `@maiife-ai-pub/eval` | LLM-as-judge evaluation engine — score agent outputs with structured rubrics | 🚧 |
-| `@maiife-ai-pub/trace` | Agent workflow tracer — trace, view, and analyze execution spans | 🚧 |
-| `@maiife-ai-pub/cost` | AI spend calculator + optimizer — unified cost report across vendors | 🚧 |
-| `@maiife-ai-pub/prompt-craft` | Gamified prompt coach — levels, streaks, badges for prompt improvement | 🚧 |
-| `@maiife-ai-pub/sub-audit` | Personal AI subscription auditor — find waste in your AI spending | 🚧 |
-| `@maiife-ai-pub/model-match` | Personal model recommender — find the best model for YOUR tasks | 🚧 |
-| `@maiife-ai-pub/weekly-ai-report` | AI week in review — Spotify Wrapped for your AI usage, weekly | 🚧 |
+| `@maiife-ai-pub/ai-stack` | "What's Your AI Stack?" — shareable profile card of your AI toolkit | ✅ |
+| `@maiife-ai-pub/mcp-doctor` | MCP health check & auto-fixer — brew doctor for your MCP setup | ✅ |
+| `@maiife-ai-pub/ai-journal` | Personal AI usage diary — track how you use AI, get reflective insights | ✅ |
+| `@maiife-ai-pub/context-sync` | Cross-tool AI memory sync — one context.json, synced to Cursor, Claude, MCP | ✅ |
+| `@maiife-ai-pub/prompt-score` | Prompt quality analyzer — score, improve, and lint your AI prompts | ✅ |
+| `@maiife-ai-pub/eval` | LLM-as-judge evaluation engine — score agent outputs with structured rubrics | ✅ |
+| `@maiife-ai-pub/trace` | Agent workflow tracer — trace, view, and analyze execution spans | ✅ |
+| `@maiife-ai-pub/cost` | AI spend calculator + optimizer — unified cost report across vendors | ✅ |
+| `@maiife-ai-pub/prompt-craft` | Gamified prompt coach — levels, streaks, badges for prompt improvement | ✅ |
+| `@maiife-ai-pub/sub-audit` | Personal AI subscription auditor — find waste in your AI spending | ✅ |
+| `@maiife-ai-pub/model-match` | Personal model recommender — find the best model for YOUR tasks | ✅ |
+| `@maiife-ai-pub/weekly-ai-report` | AI week in review — Spotify Wrapped for your AI usage, weekly | ✅ |
 
 ## Quick Start
 
