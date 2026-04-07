@@ -3,6 +3,7 @@
 Open-source AI governance tools. Each works standalone as an MCP server or CLI — together they form a governance mesh.
 
 [![scan_your_ai_toolkit MCP server](https://glama.ai/mcp/servers/sakthivelchan89/scan_your_ai_toolkit/badges/card.svg)](https://glama.ai/mcp/servers/sakthivelchan89/scan_your_ai_toolkit)
+[![scan_your_ai_toolkit MCP server](https://glama.ai/mcp/servers/sakthivelchan89/scan_your_ai_toolkit/badges/score.svg)](https://glama.ai/mcp/servers/sakthivelchan89/scan_your_ai_toolkit)
 
 [![scan_your_ai_toolkit MCP server](https://glama.ai/mcp/servers/sakthivelchan89/scan_your_ai_toolkit/badges/score.svg)](https://glama.ai/mcp/servers/sakthivelchan89/scan_your_ai_toolkit)
 [![npm scope](https://img.shields.io/badge/npm-%40maiife--ai--pub-teal)](https://www.npmjs.com/org/maiife-ai-pub)
