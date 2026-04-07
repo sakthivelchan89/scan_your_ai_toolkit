@@ -9,7 +9,7 @@ WORKDIR /app
 COPY pnpm-lock.yaml pnpm-workspace.yaml package.json turbo.json tsconfig.base.json ./
 COPY packages/shared/package.json ./packages/shared/
 COPY packages/prompt-score/package.json ./packages/prompt-score/
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --frozen-lockfile --shamefully-hoist
 
 # ── Stage 2: Build ──
 FROM deps AS builder

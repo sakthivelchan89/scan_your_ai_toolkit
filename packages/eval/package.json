@@ -1,6 +1,6 @@
 {
   "name": "@maiife-ai-pub/eval",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "LLM-as-judge evaluation engine — score agent outputs with structured rubrics",
   "type": "module",
   "main": "./dist/index.js",
@@ -32,7 +32,8 @@
   },
   "devDependencies": {
     "typescript": "^5.7.0",
-    "vitest": "^3.1.0"
+    "vitest": "^3.1.0",
+    "@types/node": "^22.0.0"
   },
   "license": "Apache-2.0",
   "author": "Maiife <contact@maiife.ai> (https://maiife.ai)",

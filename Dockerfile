@@ -15,7 +15,7 @@ COPY pnpm-lock.yaml pnpm-workspace.yaml package.json turbo.json tsconfig.base.js
 COPY packages/shared/package.json ./packages/shared/
 ARG PACKAGE
 COPY packages/${PACKAGE}/package.json ./packages/${PACKAGE}/
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --frozen-lockfile --shamefully-hoist
 
 # ── Stage 2: Build ──
 FROM deps AS builder
