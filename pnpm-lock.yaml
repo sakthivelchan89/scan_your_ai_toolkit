@@ -15,8 +15,8 @@ importers:
         specifier: ^2.9.3
         version: 2.9.3
       typescript:
-        specifier: ^5.7.0
-        version: 5.9.3
+        specifier: ^6.0.2
+        version: 6.0.2
       vitest:
         specifier: ^3.1.0
         version: 3.2.4(@types/node@22.19.17)
@@ -37,8 +37,8 @@ importers:
         specifier: ^3.1.0
         version: 3.2.4(vitest@3.2.4(@types/node@22.19.17))
       typescript:
-        specifier: ^5.7.0
-        version: 5.9.3
+        specifier: ^6.0.2
+        version: 6.0.2
       vitest:
         specifier: ^3.1.0
         version: 3.2.4(@types/node@22.19.17)
@@ -68,8 +68,8 @@ importers:
         specifier: ^3.1.0
         version: 3.2.4(vitest@3.2.4(@types/node@22.19.17))
       typescript:
-        specifier: ^5.7.0
-        version: 5.9.3
+        specifier: ^6.0.2
+        version: 6.0.2
       vitest:
         specifier: ^3.1.0
         version: 3.2.4(@types/node@22.19.17)
@@ -96,8 +96,8 @@ importers:
         specifier: ^3.1.0
         version: 3.2.4(vitest@3.2.4(@types/node@22.19.17))
       typescript:
-        specifier: ^5.7.0
-        version: 5.9.3
+        specifier: ^6.0.2
+        version: 6.0.2
       vitest:
         specifier: ^3.1.0
         version: 3.2.4(@types/node@22.19.17)
@@ -124,8 +124,8 @@ importers:
         specifier: ^3.1.0
         version: 3.2.4(vitest@3.2.4(@types/node@22.19.17))
       typescript:
-        specifier: ^5.7.0
-        version: 5.9.3
+        specifier: ^6.0.2
+        version: 6.0.2
       vitest:
         specifier: ^3.1.0
         version: 3.2.4(@types/node@22.19.17)
@@ -152,8 +152,8 @@ importers:
         specifier: ^3.1.0
         version: 3.2.4(vitest@3.2.4(@types/node@22.19.17))
       typescript:
-        specifier: ^5.7.0
-        version: 5.9.3
+        specifier: ^6.0.2
+        version: 6.0.2
       vitest:
         specifier: ^3.1.0
         version: 3.2.4(@types/node@22.19.17)
@@ -180,8 +180,8 @@ importers:
         specifier: ^3.1.0
         version: 3.2.4(vitest@3.2.4(@types/node@22.19.17))
       typescript:
-        specifier: ^5.7.0
-        version: 5.9.3
+        specifier: ^6.0.2
+        version: 6.0.2
       vitest:
         specifier: ^3.1.0
         version: 3.2.4(@types/node@22.19.17)
@@ -211,8 +211,8 @@ importers:
         specifier: ^3.1.0
         version: 3.2.4(vitest@3.2.4(@types/node@22.19.17))
       typescript:
-        specifier: ^5.7.0
-        version: 5.9.3
+        specifier: ^6.0.2
+        version: 6.0.2
       vitest:
         specifier: ^3.1.0
         version: 3.2.4(@types/node@22.19.17)
@@ -242,8 +242,8 @@ importers:
         specifier: ^3.1.0
         version: 3.2.4(vitest@3.2.4(@types/node@22.19.17))
       typescript:
-        specifier: ^5.7.0
-        version: 5.9.3
+        specifier: ^6.0.2
+        version: 6.0.2
       vitest:
         specifier: ^3.1.0
         version: 3.2.4(@types/node@22.19.17)
@@ -270,8 +270,8 @@ importers:
         specifier: ^3.1.0
         version: 3.2.4(vitest@3.2.4(@types/node@22.19.17))
       typescript:
-        specifier: ^5.7.0
-        version: 5.9.3
+        specifier: ^6.0.2
+        version: 6.0.2
       vitest:
         specifier: ^3.1.0
         version: 3.2.4(@types/node@22.19.17)
@@ -301,8 +301,8 @@ importers:
         specifier: ^3.1.0
         version: 3.2.4(vitest@3.2.4(@types/node@22.19.17))
       typescript:
-        specifier: ^5.7.0
-        version: 5.9.3
+        specifier: ^6.0.2
+        version: 6.0.2
       vitest:
         specifier: ^3.1.0
         version: 3.2.4(@types/node@22.19.17)
@@ -329,8 +329,8 @@ importers:
         specifier: ^3.1.0
         version: 3.2.4(vitest@3.2.4(@types/node@22.19.17))
       typescript:
-        specifier: ^5.7.0
-        version: 5.9.3
+        specifier: ^6.0.2
+        version: 6.0.2
       vitest:
         specifier: ^3.1.0
         version: 3.2.4(@types/node@22.19.17)
@@ -341,8 +341,8 @@ importers:
         specifier: ^22.0.0
         version: 22.19.17
       typescript:
-        specifier: ^5.7.0
-        version: 5.9.3
+        specifier: ^6.0.2
+        version: 6.0.2
 
   packages/sub-audit:
     dependencies:
@@ -369,8 +369,8 @@ importers:
         specifier: ^3.1.0
         version: 3.2.4(vitest@3.2.4(@types/node@22.19.17))
       typescript:
-        specifier: ^5.7.0
-        version: 5.9.3
+        specifier: ^6.0.2
+        version: 6.0.2
       vitest:
         specifier: ^3.1.0
         version: 3.2.4(@types/node@22.19.17)
@@ -397,8 +397,8 @@ importers:
         specifier: ^3.1.0
         version: 3.2.4(vitest@3.2.4(@types/node@22.19.17))
       typescript:
-        specifier: ^5.7.0
-        version: 5.9.3
+        specifier: ^6.0.2
+        version: 6.0.2
       vitest:
         specifier: ^3.1.0
         version: 3.2.4(@types/node@22.19.17)
@@ -422,8 +422,8 @@ importers:
         specifier: ^3.1.0
         version: 3.2.4(vitest@3.2.4(@types/node@22.19.17))
       typescript:
-        specifier: ^5.7.0
-        version: 5.9.3
+        specifier: ^6.0.2
+        version: 6.0.2
       vitest:
         specifier: ^3.1.0
         version: 3.2.4(@types/node@22.19.17)
@@ -1476,8 +1476,8 @@ packages:
     resolution: {integrity: sha512-OZs6gsjF4vMp32qrCbiVSkrFmXtG/AZhY3t0iAMrMBiAZyV9oALtXO8hsrHbMXF9x6L3grlFuwW2oAz7cav+Gw==}
     engines: {node: '>= 0.6'}
 
-  typescript@5.9.3:
-    resolution: {integrity: sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==}
+  typescript@6.0.2:
+    resolution: {integrity: sha512-bGdAIrZ0wiGDo5l8c++HWtbaNCWTS4UTv7RaTH/ThVIgjkveJt83m74bBHMJkuCbslY8ixgLBVZJIOiQlQTjfQ==}
     engines: {node: '>=14.17'}
     hasBin: true
 
@@ -2573,7 +2573,7 @@ snapshots:
       media-typer: 1.1.0
       mime-types: 3.0.2
 
-  typescript@5.9.3: {}
+  typescript@6.0.2: {}
 
   undici-types@6.21.0: {}
 
