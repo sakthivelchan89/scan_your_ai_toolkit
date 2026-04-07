@@ -1,6 +1,6 @@
 {
   "name": "@maiife-ai-pub/mcp-audit",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "MCP server security scanner — score configurations on permissions, data sensitivity, blast radius",
   "type": "module",
   "main": "./dist/index.js",
