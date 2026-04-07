@@ -3,13 +3,17 @@ name: Build & Push MCP Server Containers
 on:
   push:
     tags:
-      - "v*"           # Trigger on version tags (e.g., v0.1.0)
+      - "v*"
   workflow_dispatch:
     inputs:
       packages:
         description: "Comma-separated package names (empty = all)"
         required: false
         default: ""
+
+permissions:
+  contents: read
+  packages: write
 
 env:
   REGISTRY: ghcr.io
@@ -24,11 +28,9 @@ jobs:
       - id: set-matrix
         run: |
           if [ -n "${{ github.event.inputs.packages }}" ]; then
-            # Manual trigger — use specified packages
             IFS=',' read -ra PKGS <<< "${{ github.event.inputs.packages }}"
             JSON=$(printf '%s\n' "${PKGS[@]}" | jq -R . | jq -s -c .)
           else
-            # Tag trigger — build all MCP server packages
             JSON='["probe","mcp-audit","mcp-doctor","eval","prompt-score","prompt-craft","cost","model-match","ai-stack","context-sync","sub-audit","trace"]'
           fi
           echo "packages=$JSON" >> "$GITHUB_OUTPUT"
@@ -94,4 +96,4 @@ jobs:
       - name: Verify image
         run: |
           docker pull ${{ env.IMAGE_PREFIX }}-${{ matrix.package }}:latest || true
-          echo "✅ Published: ${{ env.IMAGE_PREFIX }}-${{ matrix.package }}:${{ steps.version.outputs.version }}"
+          echo "Published: ${{ env.IMAGE_PREFIX }}-${{ matrix.package }}:${{ steps.version.outputs.version }}"
