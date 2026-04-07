@@ -3,7 +3,7 @@
 # Run:  docker run -i ghcr.io/sakthivelchan89/maiife-probe
 
 # ── Stage 1: Install dependencies ──
-FROM node:20-alpine AS deps
+FROM node:25-alpine AS deps
 RUN corepack enable && corepack prepare pnpm@9.15.0 --activate
 WORKDIR /app
 COPY pnpm-lock.yaml pnpm-workspace.yaml package.json turbo.json tsconfig.base.json ./
@@ -19,7 +19,7 @@ RUN pnpm --filter @maiife-ai-pub/shared build 2>/dev/null || true
 RUN pnpm --filter @maiife-ai-pub/probe build
 
 # ── Stage 3: Production runner ──
-FROM node:20-alpine AS runner
+FROM node:25-alpine AS runner
 RUN addgroup -g 1001 -S maiife && adduser -S maiife -u 1001
 WORKDIR /app
 ENV NODE_ENV=production
