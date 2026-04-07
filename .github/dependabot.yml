@@ -1,0 +1,60 @@
+version: 2
+updates:
+  # npm dependencies — root + all packages
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "Asia/Kolkata"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "npm"
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+    groups:
+      # Group all patch updates into a single PR
+      patch-updates:
+        applies-to: version-updates
+        update-types:
+          - "patch"
+      # Group dev dep minor updates
+      dev-minor-updates:
+        applies-to: version-updates
+        dependency-type: "development"
+        update-types:
+          - "minor"
+
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "Asia/Kolkata"
+    labels:
+      - "dependencies"
+      - "github-actions"
+    commit-message:
+      prefix: "ci"
+      include: "scope"
+
+  # Docker (per-package Dockerfiles)
+  - package-ecosystem: "docker"
+    directory: "/packages/probe"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "dependencies"
+      - "docker"
+  - package-ecosystem: "docker"
+    directory: "/packages/mcp-audit"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "dependencies"
+      - "docker"

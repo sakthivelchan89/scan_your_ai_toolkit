@@ -5,9 +5,11 @@ Open-source AI governance tools. Each works standalone as an MCP server or CLI �
 [![scan_your_ai_toolkit MCP server](https://glama.ai/mcp/servers/sakthivelchan89/scan_your_ai_toolkit/badges/card.svg)](https://glama.ai/mcp/servers/sakthivelchan89/scan_your_ai_toolkit)
 [![scan_your_ai_toolkit MCP server](https://glama.ai/mcp/servers/sakthivelchan89/scan_your_ai_toolkit/badges/score.svg)](https://glama.ai/mcp/servers/sakthivelchan89/scan_your_ai_toolkit)
 
-[![scan_your_ai_toolkit MCP server](https://glama.ai/mcp/servers/sakthivelchan89/scan_your_ai_toolkit/badges/score.svg)](https://glama.ai/mcp/servers/sakthivelchan89/scan_your_ai_toolkit)
+[![CI](https://github.com/sakthivelchan89/scan_your_ai_toolkit/actions/workflows/ci.yml/badge.svg)](https://github.com/sakthivelchan89/scan_your_ai_toolkit/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/sakthivelchan89/scan_your_ai_toolkit/actions/workflows/codeql.yml/badge.svg)](https://github.com/sakthivelchan89/scan_your_ai_toolkit/actions/workflows/codeql.yml)
 [![npm scope](https://img.shields.io/badge/npm-%40maiife--ai--pub-teal)](https://www.npmjs.com/org/maiife-ai-pub)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue)](./LICENSE)
+[![MCP Conformance](https://img.shields.io/badge/MCP-conformance%20tested-green)](./packages/shared/src/testing/conformance.ts)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen)](https://github.com/sakthivelchan89/scan_your_ai_toolkit/pulls)
 
 Built by [Maiife](https://maiife.ai) — Enterprise AI Control Plane.
@@ -159,14 +161,56 @@ docker run -i maiife-probe
 
 Docker images use stdio transport (no ports exposed). Pass `-i` for interactive stdin/stdout communication with MCP clients.
 
+## Quality & Compliance
+
+This toolkit aims to meet **MCP Tier 1** quality standards (per [MCP SEP-1730](https://github.com/modelcontextprotocol/specification)). Here's what that means:
+
+| Dimension                 | Status                                                              |
+| ------------------------- | ------------------------------------------------------------------- |
+| **License**               | Apache 2.0 — canonical SPDX, OSI-approved                           |
+| **Transport**             | stdio only (no network exposure)                                    |
+| **CI/CD**                 | GitHub Actions: lint + type-check + tests on Node 18, 20, 22        |
+| **Test coverage**         | vitest + `@vitest/coverage-v8`, reported per-package                |
+| **MCP conformance**       | Protocol compliance suite for all 12 MCP servers                    |
+| **Security scanning**     | CodeQL (weekly + on PR), Dependabot (weekly)                        |
+| **Vulnerability response**| 48h CRITICAL / 7d HIGH (see [DEPENDENCY_POLICY.md](./DEPENDENCY_POLICY.md)) |
+| **Issue triage SLA**      | 2 business days (see [CONTRIBUTING.md](./CONTRIBUTING.md))          |
+| **Versioning**            | SemVer, lockstep across packages, [CHANGELOG.md](./CHANGELOG.md)    |
+| **Supply chain**          | `pnpm-lock.yaml` committed, `--frozen-lockfile` in CI               |
+| **Container security**    | Non-root user, no exposed ports, GHCR-signed                        |
+
+### Conformance test suite
+
+Every MCP server in this repo is validated against the MCP protocol contract:
+
+- ✅ stdio transport invariant (no non-JSON output on stdout)
+- ✅ `initialize` handshake responds with valid `serverInfo` + capabilities
+- ✅ `tools/list` returns the documented tool set
+- ✅ All tool `inputSchema` fields are valid JSON Schema objects
+- ✅ Unknown tool calls return structured errors (not crashes)
+
+Run the suite:
+
+```bash
+pnpm test:conformance      # all packages
+cd packages/probe && pnpm test:conformance   # single package
+```
+
+### Documentation
+
+- **[SECURITY.md](./SECURITY.md)** — vulnerability reporting policy
+- **[CONTRIBUTING.md](./CONTRIBUTING.md)** — issue/PR guidelines and SLAs
+- **[CHANGELOG.md](./CHANGELOG.md)** — version history (Keep a Changelog format)
+- **[DEPENDENCY_POLICY.md](./DEPENDENCY_POLICY.md)** — dependency selection criteria & patch SLAs
+
 ## Contributing
 
-Contributions are welcome! Here's how to get started:
+Contributions are welcome! Read [CONTRIBUTING.md](./CONTRIBUTING.md) for the full guide. Quick version:
 
 1. **Fork** the repo on GitHub
 2. **Create a branch**: `git checkout -b feat/my-improvement`
 3. **Make your changes** — each package lives in `packages/<name>/`
-4. **Run tests**: `pnpm test`
+4. **Run tests**: `pnpm test && pnpm test:conformance`
 5. **Open a PR** against `main` — describe what you changed and why
 
 Please follow the existing code style (TypeScript, ESM, Vitest for tests). Each package should work as both a CLI and an MCP server where applicable.

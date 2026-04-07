@@ -3,3 +3,6 @@ dist
 .turbo
 *.tsbuildinfo
 .env*
+coverage
+*.lcov
+.nyc_output

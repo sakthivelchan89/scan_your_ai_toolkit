@@ -14,7 +14,7 @@ describe("checkServer", () => {
 
   it("marks server as healthy when command and deps exist", async () => {
     vi.spyOn(fs, "existsSync").mockReturnValue(true);
-    vi.spyOn(childProcess, "execSync").mockReturnValue(Buffer.from("v20.0.0"));
+    vi.spyOn(childProcess, "execFileSync").mockReturnValue(Buffer.from("v20.0.0"));
 
     const server: ParsedMCPServer = {
       name: "weather",
@@ -32,7 +32,7 @@ describe("checkServer", () => {
 
   it("marks server as dead when command binary is missing", async () => {
     vi.spyOn(fs, "existsSync").mockReturnValue(false);
-    vi.spyOn(childProcess, "execSync").mockImplementation(() => {
+    vi.spyOn(childProcess, "execFileSync").mockImplementation(() => {
       throw new Error("not found");
     });
 
@@ -53,7 +53,7 @@ describe("checkServer", () => {
 
   it("flags missing env vars as degraded", async () => {
     vi.spyOn(fs, "existsSync").mockReturnValue(true);
-    vi.spyOn(childProcess, "execSync").mockReturnValue(Buffer.from("ok"));
+    vi.spyOn(childProcess, "execFileSync").mockReturnValue(Buffer.from("ok"));
 
     const server: ParsedMCPServer = {
       name: "github",
