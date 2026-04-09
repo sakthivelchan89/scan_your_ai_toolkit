@@ -1,6 +1,6 @@
 {
   "name": "@maiife-ai-pub/prompt-craft",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Gamified Personal Prompt Coach — Duolingo for AI prompting with levels, streaks, and badges",
   "type": "module",
   "main": "./dist/index.js",

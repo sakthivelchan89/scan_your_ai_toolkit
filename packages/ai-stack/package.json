@@ -1,6 +1,6 @@
 {
   "name": "@maiife-ai-pub/ai-stack",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "What's Your AI Stack? — Generate a shareable profile card of your AI toolkit",
   "type": "module",
   "main": "./dist/index.js",

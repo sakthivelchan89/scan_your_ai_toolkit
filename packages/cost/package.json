@@ -1,6 +1,6 @@
 {
   "name": "@maiife-ai-pub/cost",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "AI spend calculator + optimizer — unified cost report across vendors",
   "type": "module",
   "main": "./dist/index.js",
