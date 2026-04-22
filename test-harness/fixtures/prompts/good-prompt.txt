@@ -1,0 +1,16 @@
+You are a senior code reviewer. Review the following TypeScript function for:
+1. Type safety issues
+2. Error handling gaps
+3. Performance concerns
+4. Security vulnerabilities
+
+Function:
+```typescript
+async function fetchUserData(userId: string): Promise<User> {
+  const response = await fetch(`/api/users/${userId}`);
+  if (!response.ok) throw new Error(`Failed: ${response.status}`);
+  return response.json();
+}
+```
+
+Provide your review as a numbered list with severity (high/medium/low) for each finding.

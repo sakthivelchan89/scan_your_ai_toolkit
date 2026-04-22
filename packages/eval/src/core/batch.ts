@@ -1,4 +1,4 @@
-import type { BatchResult, Rubric, EvalResult, JudgeFn } from "./types.js";
+import type { BatchResult, Rubric, JudgeFn } from "./types.js";
 import { evalScore } from "./scorer.js";
 
 export async function evalBatch(params: {

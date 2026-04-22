@@ -9,6 +9,8 @@ const EMPTY_RESULT: ProbeResult = {
   keys: [],
   models: [],
   deps: [],
+  tools: [],
+  extensions: [],
 };
 
 export async function runScan(

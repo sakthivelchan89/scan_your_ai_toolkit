@@ -4,6 +4,8 @@ export interface JournalEntry {
   tool: string;
   taskType: string;
   durationMinutes?: number;
+  project?: string;
+  session?: string;
   notes?: string;
 }
 

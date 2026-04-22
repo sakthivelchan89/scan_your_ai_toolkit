@@ -1,73 +1,43 @@
 # @maiife-ai-pub/prompt-score
 
-Prompt quality analyzer — score, improve, and lint your AI prompts before they reach your LLM.
+> Prompt quality analyzer — score, improve, and lint your AI prompts across clarity, specificity, context, and safety dimensions.
 
-Part of the [Maiife](https://maiife.ai) OSS toolkit for AI governance.
+[![npm](https://img.shields.io/npm/v/@maiife-ai-pub/prompt-score)](https://www.npmjs.com/package/@maiife-ai-pub/prompt-score)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue)](../../LICENSE)
+
+Part of the [Maiife AI Governance Toolkit](https://github.com/sakthivelchan89/scan_your_ai_toolkit).
+
+---
 
 ## Install
 
 ```bash
-npm install @maiife-ai-pub/prompt-score
+npm install -g @maiife-ai-pub/prompt-score
+# or run without installing
+npx @maiife-ai-pub/prompt-score analyze --input prompt.txt
 ```
 
-Or use directly without installing:
+---
+
+## CLI
 
 ```bash
-npx @maiife-ai-pub/prompt-score score "Your prompt here"
+# Analyze a prompt file
+maiife-prompt-score analyze --input prompt.txt
+
+# Get an improved version
+maiife-prompt-score improve --input prompt.txt
+
+# Lint prompts in a directory
+maiife-prompt-score lint --dir ./prompts
+
+# Track scores over time for a project
+maiife-prompt-score track --project my-app
 ```
 
-## CLI Usage
+---
 
-### Score a prompt
-
-```bash
-npx @maiife-ai-pub/prompt-score score "Summarize the following document: ..."
-```
-
-Example output:
-
-```
-Maiife Prompt Score v0.1.0
-
-Prompt Analysis
-  Length            312 chars     OK
-  Clarity           high          clear instruction verb detected
-  Specificity       medium        consider adding output format
-  Role / Persona    none          tip: add a system role for better results
-  Injection Risk    low           no obvious injection patterns
-
-Score: 74/100
-
-Suggestions:
-  1. Add an output format instruction (e.g. "Return as a bullet list")
-  2. Specify a persona: "You are a senior analyst..."
-```
-
-### Lint a prompt file
-
-```bash
-npx @maiife-ai-pub/prompt-score lint prompts/summarize.txt
-```
-
-### Watch a directory for prompt changes
-
-```bash
-npx @maiife-ai-pub/prompt-score lint prompts/ --watch
-```
-
-### Output formats
-
-```bash
-npx @maiife-ai-pub/prompt-score score "..." --format json
-npx @maiife-ai-pub/prompt-score score "..." --format table
-npx @maiife-ai-pub/prompt-score score "..." --format html > report.html
-```
-
-## MCP Server Usage
-
-Add `@maiife-ai-pub/prompt-score` as an MCP server so AI assistants can score and improve prompts on demand.
-
-### Claude Desktop (`~/Library/Application Support/Claude/claude_desktop_config.json`)
+## MCP Server
 
 ```json
 {
@@ -80,51 +50,39 @@ Add `@maiife-ai-pub/prompt-score` as an MCP server so AI assistants can score an
 }
 ```
 
-### Cursor (`.cursor/mcp.json` in your project or `~/.cursor/mcp.json` globally)
+**Available tools:** `prompt_score_analyze`, `prompt_score_improve`, `prompt_score_track`
 
-```json
-{
-  "mcpServers": {
-    "maiife-prompt-score": {
-      "command": "npx",
-      "args": ["@maiife-ai-pub/prompt-score", "mcp"]
-    }
-  }
-}
-```
-
-Once configured, your AI assistant can call tools like `prompt_score`, `prompt_improve`, and `prompt_lint`.
-
-### Docker
-
-```bash
-docker run -i ghcr.io/sakthivelchan89/maiife-prompt-score
-```
+---
 
 ## Programmatic API
 
-```typescript
-import { scorePrompt, lintPrompt, improvePrompt } from "@maiife-ai-pub/prompt-score";
+```ts
+import { scorePrompt, improvePrompt, createPromptGate } from "@maiife-ai-pub/prompt-score";
 
-const result = await scorePrompt("Summarize the document below...");
+// Score a prompt
+const result = scorePrompt("Summarize this.");
+console.log(`Score: ${result.score}/100 (${result.grade})`);
+// { score: 42, grade: "D", dimensions: { clarity: 50, specificity: 30, ... } }
 
-console.log(result.score);        // 0-100
-console.log(result.issues);       // array of linting issues
-console.log(result.suggestions);  // improvement suggestions
+// Gate prompts below a threshold
+const gate = createPromptGate({ minScore: 60 });
+const check = gate.check("Summarize this.");
+if (!check.allow) console.warn(`Prompt blocked: ${check.reason}`);
 ```
 
-### Types
+---
 
-```typescript
-import type { PromptScoreResult, PromptIssue, ScoreDimension } from "@maiife-ai-pub/prompt-score";
-```
+## Scoring Dimensions
 
-## Requirements
+| Dimension | What it checks |
+|-----------|----------------|
+| **Clarity** | Unambiguous instruction, no contradictions |
+| **Specificity** | Concrete constraints, examples, format hints |
+| **Context** | Role, background, relevant details provided |
+| **Safety** | No jailbreak patterns, appropriate scope |
 
-- Node.js >= 18
+---
 
 ## License
 
-Apache 2.0 — see [LICENSE](./LICENSE)
-
-Copyright 2026 Maiife — [maiife.ai](https://maiife.ai)
+[Apache 2.0](../../LICENSE) — Built by [Maiife](https://maiife.ai)

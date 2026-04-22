@@ -1,0 +1,38 @@
+[
+  {
+    "id": "trace-001",
+    "agent": "code-review-agent",
+    "startedAt": "2026-04-10T09:00:00Z",
+    "completedAt": "2026-04-10T09:00:12Z",
+    "status": "success",
+    "steps": [
+      {"name": "fetch-pr", "tool": "github.get_pull_request", "input": {"pr": 42}, "output": {"title": "Add auth middleware", "files": 3}, "latencyMs": 850, "tokens": 0},
+      {"name": "analyze-diff", "tool": "llm.chat", "input": {"model": "claude-sonnet-4-20250514", "prompt": "Review this diff..."}, "output": {"findings": 2}, "latencyMs": 3200, "tokens": 1850},
+      {"name": "post-review", "tool": "github.create_review", "input": {"pr": 42, "body": "2 findings..."}, "output": {"id": "rv-99"}, "latencyMs": 620, "tokens": 0}
+    ]
+  },
+  {
+    "id": "trace-002",
+    "agent": "deploy-agent",
+    "startedAt": "2026-04-10T10:30:00Z",
+    "completedAt": "2026-04-10T10:31:05Z",
+    "status": "failure",
+    "steps": [
+      {"name": "run-tests", "tool": "bash.exec", "input": {"cmd": "pnpm test"}, "output": {"exitCode": 0}, "latencyMs": 15000, "tokens": 0},
+      {"name": "build", "tool": "bash.exec", "input": {"cmd": "pnpm build"}, "output": {"exitCode": 0}, "latencyMs": 22000, "tokens": 0},
+      {"name": "deploy", "tool": "vercel.deploy", "input": {"env": "production"}, "output": {"error": "Build timeout after 60s"}, "latencyMs": 60000, "tokens": 0}
+    ]
+  },
+  {
+    "id": "trace-003",
+    "agent": "code-review-agent",
+    "startedAt": "2026-04-11T14:00:00Z",
+    "completedAt": "2026-04-11T14:00:08Z",
+    "status": "success",
+    "steps": [
+      {"name": "fetch-pr", "tool": "github.get_pull_request", "input": {"pr": 45}, "output": {"title": "Fix N+1 queries", "files": 5}, "latencyMs": 700, "tokens": 0},
+      {"name": "analyze-diff", "tool": "llm.chat", "input": {"model": "gpt-4o", "prompt": "Review this diff..."}, "output": {"findings": 4}, "latencyMs": 4100, "tokens": 2200},
+      {"name": "post-review", "tool": "github.create_review", "input": {"pr": 45, "body": "4 findings..."}, "output": {"id": "rv-102"}, "latencyMs": 580, "tokens": 0}
+    ]
+  }
+]

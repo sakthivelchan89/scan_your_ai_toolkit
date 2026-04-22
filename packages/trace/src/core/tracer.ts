@@ -1,4 +1,5 @@
 import type { Trace, Span } from "./types.js";
+import { saveTrace } from "./store.js";
 
 let counter = 0;
 function genId(prefix: string): string { return `${prefix}_${Date.now()}_${++counter}`; }
@@ -38,6 +39,7 @@ export function createTracer(agent: string): Tracer {
       trace.endTime = new Date().toISOString();
       trace.status = status;
       trace.durationMs = new Date(trace.endTime).getTime() - new Date(trace.startTime).getTime();
+      try { saveTrace(trace); } catch { /* best-effort persistence */ }
     },
     startSpan(traceId, name, parentId, attributes = {}) {
       const trace = traces.get(traceId);

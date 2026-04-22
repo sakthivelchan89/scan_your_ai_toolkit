@@ -58,17 +58,11 @@ program.command("challenge").description("This week's challenge")
     console.log(`   Target score: ${c.targetScore}+\n`);
   });
 
-program
-  .command('mcp')
-  .description('Start MCP server over stdio')
+program.command('mcp')
+  .description('Start MCP server (stdio transport)')
   .action(async () => {
     const { startMCPServer } = await import('../mcp/index.js');
     await startMCPServer();
   });
 
-// If no arguments, default to MCP server (for npx/Glama/Claude Desktop)
-if (process.argv.length <= 2) {
-  import('../mcp/index.js').then(m => m.startMCPServer());
-} else {
-  program.parse();
-}
+program.parse();

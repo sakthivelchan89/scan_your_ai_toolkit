@@ -75,10 +75,10 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
   const { name, arguments: args } = request.params;
   try {
-    const params = (args ?? {}) as any;
-    if (name === "eval_score") { const r = await evalScoreTool(params); return { content: [{ type: "text" as const, text: JSON.stringify(r, null, 2) }] }; }
-    if (name === "eval_batch") { const r = await evalBatchTool(params); return { content: [{ type: "text" as const, text: JSON.stringify(r, null, 2) }] }; }
-    if (name === "eval_compare") { const r = await evalCompareTool(params); return { content: [{ type: "text" as const, text: JSON.stringify(r, null, 2) }] }; }
+    const params = args as Record<string, unknown> ?? {};
+    if (name === "eval_score") { const r = await evalScoreTool(params as Parameters<typeof evalScoreTool>[0]); return { content: [{ type: "text" as const, text: JSON.stringify(r, null, 2) }] }; }
+    if (name === "eval_batch") { const r = await evalBatchTool(params as Parameters<typeof evalBatchTool>[0]); return { content: [{ type: "text" as const, text: JSON.stringify(r, null, 2) }] }; }
+    if (name === "eval_compare") { const r = await evalCompareTool(params as Parameters<typeof evalCompareTool>[0]); return { content: [{ type: "text" as const, text: JSON.stringify(r, null, 2) }] }; }
     throw new Error(`Unknown tool: ${name}`);
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
@@ -87,3 +87,6 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 });
 
 export async function startMCPServer() { const t = new StdioServerTransport(); await server.connect(t); }
+
+// Auto-start when run directly
+startMCPServer().catch(console.error);

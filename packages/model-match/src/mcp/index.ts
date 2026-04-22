@@ -36,9 +36,9 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
   const { name, arguments: args } = request.params;
   try {
-    const params = (args ?? {}) as any;
-    if (name === "model_match_compare") { const r = await modelMatchCompare(params); return { content: [{ type: "text" as const, text: JSON.stringify(r, null, 2) }] }; }
-    if (name === "model_match_recommend") { const r = await modelMatchRecommend(params); return { content: [{ type: "text" as const, text: JSON.stringify(r, null, 2) }] }; }
+    const params = args as Record<string, unknown> ?? {};
+    if (name === "model_match_compare") { const r = await modelMatchCompare(params as Parameters<typeof modelMatchCompare>[0]); return { content: [{ type: "text" as const, text: JSON.stringify(r, null, 2) }] }; }
+    if (name === "model_match_recommend") { const r = await modelMatchRecommend(params as Parameters<typeof modelMatchRecommend>[0]); return { content: [{ type: "text" as const, text: JSON.stringify(r, null, 2) }] }; }
     throw new Error(`Unknown tool: ${name}`);
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
@@ -47,3 +47,6 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 });
 
 export async function startMCPServer() { const t = new StdioServerTransport(); await server.connect(t); }
+
+// Auto-start when run directly
+startMCPServer().catch(console.error);

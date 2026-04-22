@@ -1,6 +1,6 @@
 {
   "name": "@maiife-ai-pub/model-match",
-  "version": "0.1.4",
+  "version": "0.2.2",
   "description": "Personal Model Recommender — find the best model for YOUR tasks",
   "type": "module",
   "main": "./dist/index.js",

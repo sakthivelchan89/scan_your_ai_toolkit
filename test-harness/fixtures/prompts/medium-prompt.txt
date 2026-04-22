@@ -1,0 +1,1 @@
+Write a Python function that takes a list of numbers and returns the top 3 largest values. Handle edge cases.

@@ -26,6 +26,7 @@ describe("IDEScanner", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.mocked(os.homedir).mockReturnValue("/home/user");
+    vi.mocked(os.platform).mockReturnValue("darwin");
   });
 
   it("detects github-copilot extension from VS Code", async () => {
@@ -98,5 +99,61 @@ describe("IDEScanner", () => {
     expect(names).toContain("continue");
     expect(names).toContain("cody");
     expect(names).toContain("windsurf");
+  });
+
+  it("detects Cursor app on mac when app bundle exists", async () => {
+    vi.mocked(fs.existsSync).mockImplementation((p) =>
+      String(p).replace(/\\/g, "/").includes("Cursor.app/Contents/Resources/app/package.json")
+    );
+    vi.mocked(fs.readFileSync).mockReturnValue(JSON.stringify({ version: "0.44.0" }) as any);
+    vi.mocked(fs.readdirSync).mockReturnValue([] as any);
+
+    const scanner = createIDEScanner();
+    const findings = await scanner.scan(config);
+
+    expect(findings.some((f) => f.name === "cursor" && f.version === "0.44.0")).toBe(true);
+  });
+
+  it("detects Windsurf app on mac when app bundle exists", async () => {
+    vi.mocked(fs.existsSync).mockImplementation((p) =>
+      String(p).replace(/\\/g, "/").includes("Windsurf.app/Contents/Resources/app/package.json")
+    );
+    vi.mocked(fs.readFileSync).mockReturnValue(JSON.stringify({ version: "1.0.0" }) as any);
+    vi.mocked(fs.readdirSync).mockReturnValue([] as any);
+
+    const scanner = createIDEScanner();
+    const findings = await scanner.scan(config);
+
+    expect(findings.some((f) => f.name === "windsurf" && f.version === "1.0.0")).toBe(true);
+  });
+
+  it("detects Cursor app on windows when app bundle exists", async () => {
+    vi.mocked(os.platform).mockReturnValue("win32");
+    vi.mocked(fs.existsSync).mockImplementation((p) =>
+      String(p).replace(/\\/g, "/").includes("Programs/cursor/resources/app/package.json")
+    );
+    vi.mocked(fs.readFileSync).mockReturnValue(JSON.stringify({ version: "0.44.0" }) as any);
+    vi.mocked(fs.readdirSync).mockReturnValue([] as any);
+
+    const scanner = createIDEScanner();
+    const findings = await scanner.scan(config);
+
+    expect(findings.some((f) => f.name === "cursor")).toBe(true);
+  });
+
+  it("does not duplicate Windsurf if already found via extensions", async () => {
+    vi.mocked(fs.existsSync).mockReturnValue(true);
+    vi.mocked(fs.readdirSync).mockImplementation((p) => {
+      const np = String(p).replace(/\\/g, "/");
+      if (np.includes(".cursor/extensions")) return ["codeium.windsurf-2.0.0"] as any;
+      if (np.includes(".vscode/extensions")) return ["github.copilot-1.0.0"] as any;
+      return [] as any;
+    });
+    vi.mocked(fs.readFileSync).mockReturnValue(JSON.stringify({ version: "2.0.0" }) as any);
+
+    const scanner = createIDEScanner();
+    const findings = await scanner.scan(config);
+
+    expect(findings.filter((f) => f.name === "windsurf")).toHaveLength(1);
   });
 });

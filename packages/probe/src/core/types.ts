@@ -1,6 +1,6 @@
-import type { RiskLevel, Finding } from "@maiife-ai-pub/shared";
+import type { RiskLevel } from "@maiife-ai-pub/shared";
 
-export type ScanCategory = "ide" | "mcp" | "agents" | "keys" | "models" | "deps";
+export type ScanCategory = "ide" | "mcp" | "agents" | "keys" | "models" | "deps" | "tools" | "extensions";
 export type ScanScope = "full" | "quick" | "category";
 
 export interface ScanConfig {
@@ -55,6 +55,33 @@ export interface DepFinding {
   category: string;
 }
 
+export interface ToolFinding {
+  name: string;
+  label: string;
+  category: "desktop" | "cli";
+  configPath?: string;
+  /**
+   * Populated fields depend on tool category:
+   * - claude-desktop: mcpCount
+   * - claude-code: hooksCount, skillsCount, memoryFiles
+   * - others: empty {}
+   */
+  configSummary: {
+    mcpCount?: number;
+    hooksCount?: number;
+    skillsCount?: number;
+    memoryFiles?: number;
+  };
+}
+
+export interface ExtensionFinding {
+  name: string;
+  version: string;
+  host: "chrome" | "edge" | "brave" | "visual-studio";
+  extensionId: string;
+  profilePath: string;
+}
+
 export interface ProbeResult {
   ide: IDEFinding[];
   mcp: MCPServerFinding[];
@@ -62,6 +89,8 @@ export interface ProbeResult {
   keys: APIKeyFinding[];
   models: LocalModelFinding[];
   deps: DepFinding[];
+  tools: ToolFinding[];
+  extensions: ExtensionFinding[];
 }
 
 export interface Scanner<T> {
@@ -71,7 +100,7 @@ export interface Scanner<T> {
 
 export const DEFAULT_SCAN_CONFIG: ScanConfig = {
   scope: "full",
-  categories: ["ide", "mcp", "agents", "keys", "models", "deps"],
+  categories: ["ide", "mcp", "agents", "keys", "models", "deps", "tools", "extensions"],
   path: process.cwd(),
   includeProjectDeps: true,
 };

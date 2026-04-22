@@ -1,102 +1,77 @@
 # @maiife-ai-pub/model-match
 
-Personal Model Recommender — find the best model for YOUR tasks.
+> Personal model recommender — find the best AI model for YOUR tasks based on cost, capability, and speed trade-offs.
 
-Profiles your actual task distribution and recommends the optimal model(s) using evaluation data from `@maiife-ai-pub/eval`. Considers cost, latency, quality, and context window requirements.
+[![npm](https://img.shields.io/npm/v/@maiife-ai-pub/model-match)](https://www.npmjs.com/package/@maiife-ai-pub/model-match)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue)](../../LICENSE)
 
-Part of the [Maiife OSS Toolkit](https://maiife.ai) for enterprise AI governance.
+Part of the [Maiife AI Governance Toolkit](https://github.com/sakthivelchan89/scan_your_ai_toolkit).
+
+---
 
 ## Install
 
 ```bash
-npm install @maiife-ai-pub/model-match
+npm install -g @maiife-ai-pub/model-match
+# or run without installing
+npx @maiife-ai-pub/model-match recommend --task coding
 ```
 
-## CLI Usage
+---
 
-### Get model recommendations
+## CLI
 
 ```bash
-npx @maiife-ai-pub/model-match recommend
+# Get a model recommendation for a task
+maiife-model-match recommend --task coding
+
+# Compare specific models
+maiife-model-match compare --models gpt-4o,claude-sonnet-4-6 --task reasoning
 ```
 
-Example output:
+---
 
-```
-Model Match for Your Task Profile
-
-  Task breakdown:
-    Code generation   45%
-    Summarization     30%
-    Q&A               15%
-    Creative writing  10%
-
-  Top recommendations:
-    1. claude-3-5-sonnet   Score: 94   Best for: code + summarization, balanced cost
-    2. gpt-4o-mini         Score: 81   Best for: high-volume Q&A, lowest cost
-    3. gemini-1.5-pro      Score: 78   Best for: long-context summarization
-
-  Current model: gpt-4o   Estimated waste: $23/mo
-```
-
-### Recommend for a specific task type
-
-```bash
-npx @maiife-ai-pub/model-match recommend --task "code-review"
-```
-
-## MCP Server Usage
-
-Add `@maiife-ai-pub/model-match` as an MCP server in your Claude Desktop or Cursor config:
+## MCP Server
 
 ```json
 {
   "mcpServers": {
-    "model-match": {
+    "maiife-model-match": {
       "command": "npx",
-      "args": ["@maiife-ai-pub/model-match", "mcp"],
-      "env": {}
+      "args": ["@maiife-ai-pub/model-match", "mcp"]
     }
   }
 }
 ```
 
-Once configured, Claude/Cursor can call tools like `recommend_model`, `compare_models`, and `estimate_cost` directly from the chat interface.
+**Available tools:** `model_match_compare`, `model_match_recommend`
 
-### Docker
-
-```bash
-docker run -i ghcr.io/sakthivelchan89/maiife-model-match
-```
+---
 
 ## Programmatic API
 
-```typescript
-import { recommendModel, compareModels, TaskProfile } from "@maiife-ai-pub/model-match";
+```ts
+import { recommendModel, compareModels } from "@maiife-ai-pub/model-match";
 
-// Build a task profile
-const profile: TaskProfile = {
-  codeGeneration: 0.45,
-  summarization: 0.30,
-  qa: 0.15,
-  creativeWriting: 0.10,
-};
+// Get the best model for a task
+const rec = await recommendModel({ task: "coding" });
+console.log(`Recommended: ${rec.model} — ${rec.reason}`);
 
-// Get top recommendations
-const recommendations = await recommendModel(profile, {
-  maxMonthlyCost: 50,
-  minContextWindow: 32000,
+// Compare two models
+const comparison = await compareModels({
+  models: ["gpt-4o", "claude-sonnet-4-6"],
+  task: "reasoning",
 });
-
-console.log(`Top pick: ${recommendations[0].model} (score: ${recommendations[0].score})`);
-
-// Compare two specific models side-by-side
-const comparison = await compareModels("claude-3-5-sonnet", "gpt-4o", profile);
-console.log(comparison.summary);
 ```
+
+---
+
+## Supported Models
+
+`gpt-4.1` · `gpt-4.1-mini` · `gpt-4o` · `o3` · `o3-mini` · `o4-mini` · `claude-opus-4-5` · `claude-sonnet-4-5` · `claude-haiku-4-5` · `gemini-2.5-pro` · `gemini-2.5-flash`
+
+---
 
 ## License
 
-Apache 2.0 — see [LICENSE](./LICENSE)
-
-Built by [Maiife](https://maiife.ai) — Enterprise AI Control Plane.
+[Apache 2.0](../../LICENSE) — Built by [Maiife](https://maiife.ai)

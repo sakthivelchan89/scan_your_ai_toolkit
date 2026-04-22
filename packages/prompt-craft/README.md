@@ -1,97 +1,80 @@
 # @maiife-ai-pub/prompt-craft
 
-Gamified Personal Prompt Coach — Duolingo for AI prompting with levels, streaks, and badges.
+> Gamified personal prompt coach — Duolingo for AI prompting. Earn XP, unlock levels and badges as your prompts improve.
 
-Analyzes your prompts, scores them with `@maiife-ai-pub/prompt-score`, and guides you through leveled exercises to improve clarity, specificity, and output quality.
+[![npm](https://img.shields.io/npm/v/@maiife-ai-pub/prompt-craft)](https://www.npmjs.com/package/@maiife-ai-pub/prompt-craft)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue)](../../LICENSE)
 
-Part of the [Maiife OSS Toolkit](https://maiife.ai) for enterprise AI governance.
+Part of the [Maiife AI Governance Toolkit](https://github.com/sakthivelchan89/scan_your_ai_toolkit).
+
+---
 
 ## Install
 
 ```bash
-npm install @maiife-ai-pub/prompt-craft
+npm install -g @maiife-ai-pub/prompt-craft
+# or run without installing
+npx @maiife-ai-pub/prompt-craft score --input prompt.txt
 ```
 
-## CLI Usage
+---
 
-### Score a prompt and get coaching feedback
+## CLI
 
 ```bash
-npx @maiife-ai-pub/prompt-craft score "Summarize this document"
+# Score a prompt and earn XP
+maiife-prompt-craft score --input prompt.txt
+
+# Get an improved version of your prompt
+maiife-prompt-craft improve --input prompt.txt
+
+# View your profile (level, XP, badges)
+maiife-prompt-craft profile
+
+# Get this week's prompting challenge
+maiife-prompt-craft challenge
 ```
 
-Example output:
+---
 
-```
-Prompt Score: 42 / 100  (Level: Beginner)
-
-  Clarity       3 / 10   Too vague — which document? what length?
-  Specificity   4 / 10   No format or audience specified
-  Context       2 / 10   Missing role, task, and constraints
-
-Suggestions:
-  - Add a role: "You are a technical writer..."
-  - Specify output format: "in 3 bullet points"
-  - Define the audience: "for a non-technical executive"
-
-Improved prompt: "You are a technical writer. Summarize the following document in 3 bullet points for a non-technical executive."
-New score: 87 / 100
-```
-
-### Start a coaching session
-
-```bash
-npx @maiife-ai-pub/prompt-craft coach
-```
-
-## MCP Server Usage
-
-Add `@maiife-ai-pub/prompt-craft` as an MCP server in your Claude Desktop or Cursor config:
+## MCP Server
 
 ```json
 {
   "mcpServers": {
-    "prompt-craft": {
+    "maiife-prompt-craft": {
       "command": "npx",
-      "args": ["@maiife-ai-pub/prompt-craft", "mcp"],
-      "env": {}
+      "args": ["@maiife-ai-pub/prompt-craft", "mcp"]
     }
   }
 }
 ```
 
-Once configured, Claude/Cursor can call tools like `score_prompt`, `improve_prompt`, and `get_exercises` directly from the chat interface.
+**Available tools:** `prompt_craft_score`, `prompt_craft_improve`, `prompt_craft_profile`, `prompt_craft_challenge`
 
-### Docker
-
-```bash
-docker run -i ghcr.io/sakthivelchan89/maiife-prompt-craft
-```
+---
 
 ## Programmatic API
 
-```typescript
-import { scorePrompt, improvePrompt, PromptLevel } from "@maiife-ai-pub/prompt-craft";
+```ts
+import { recordScore, getLevelName, checkBadges, diffPrompts } from "@maiife-ai-pub/prompt-craft";
 
-// Score a prompt
-const result = await scorePrompt("Summarize this document");
+// Record a score and earn XP
+const result = recordScore(75);
+console.log(`Level: ${getLevelName(result.totalXP)} | +${result.xpGained} XP`);
 
-console.log(`Score: ${result.score}`);
-console.log(`Level: ${result.level}`);
-console.log(`Suggestions: ${result.suggestions.join("\n")}`);
+// Check for newly unlocked badges
+const badges = checkBadges(result.totalXP, result.streak);
 
-// Get an improved version
-const improved = await improvePrompt("Summarize this document", {
-  targetLevel: PromptLevel.Advanced,
-  audience: "non-technical",
-});
-
-console.log(`Improved: ${improved.prompt}`);
-console.log(`New score: ${improved.score}`);
+// Diff two prompt versions
+const diff = diffPrompts(beforePrompt, afterPrompt, 42, 75);
+console.log(formatDiff(diff));
 ```
+
+Progress is stored locally at `~/.maiife/prompt-craft.json`.
+
+---
 
 ## License
 
-Apache 2.0 — see [LICENSE](./LICENSE)
-
-Built by [Maiife](https://maiife.ai) — Enterprise AI Control Plane.
+[Apache 2.0](../../LICENSE) — Built by [Maiife](https://maiife.ai)

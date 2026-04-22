@@ -49,7 +49,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
   const { name, arguments: args } = request.params;
   try {
-    const params = (args ?? {}) as Record<string, any>;
+    const params = (args ?? {}) as Record<string, unknown>;
     if (name === "prompt_score_analyze") {
       const result = await promptScoreAnalyze(params as { prompt: string; track?: boolean; project?: string });
       return { content: [{ type: "text" as const, text: JSON.stringify(result, null, 2) }] };
@@ -73,3 +73,6 @@ export async function startMCPServer() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
 }
+
+// Auto-start when run directly
+startMCPServer().catch(console.error);

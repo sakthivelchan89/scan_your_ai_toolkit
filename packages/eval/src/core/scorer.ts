@@ -1,4 +1,4 @@
-import type { EvalResult, EvalScore, Rubric, JudgeFn } from "./types.js";
+import type { EvalResult, Rubric, JudgeFn } from "./types.js";
 
 function gradeFromScore(score: number): EvalResult["grade"] {
   if (score >= 80) return "A";

@@ -1,93 +1,91 @@
 # @maiife-ai-pub/mcp-doctor
 
-MCP Server Health Check & Auto-Fixer — brew doctor for your MCP setup.
+> MCP server health check & auto-fixer — brew doctor for your MCP setup. Detects dead, stale, and misconfigured servers.
 
-Diagnoses misconfigured, broken, or risky MCP servers and suggests fixes. Built on top of `@maiife-ai-pub/mcp-audit` for security scoring.
+[![npm](https://img.shields.io/npm/v/@maiife-ai-pub/mcp-doctor)](https://www.npmjs.com/package/@maiife-ai-pub/mcp-doctor)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue)](../../LICENSE)
 
-Part of the [Maiife OSS Toolkit](https://maiife.ai) for enterprise AI governance.
+Part of the [Maiife AI Governance Toolkit](https://github.com/sakthivelchan89/scan_your_ai_toolkit).
+
+---
 
 ## Install
 
 ```bash
-npm install @maiife-ai-pub/mcp-doctor
-```
-
-## CLI Usage
-
-### Run a full health check
-
-```bash
+npm install -g @maiife-ai-pub/mcp-doctor
+# or run without installing
 npx @maiife-ai-pub/mcp-doctor check
 ```
 
-Example output:
+---
 
-```
-Checking MCP servers...
-
-  filesystem      OK       All checks passed
-  github          WARN     Tool list not restricted — consider limiting to read-only
-  database-proxy  ERROR    Server unreachable at tcp://localhost:5432
-
-2 warnings, 1 error. Run with --fix to auto-repair where possible.
-```
-
-### Auto-fix known issues
+## CLI
 
 ```bash
-npx @maiife-ai-pub/mcp-doctor check --fix
+# Health check all MCP servers
+maiife-mcp-doctor check
+
+# Auto-fix detected issues
+maiife-mcp-doctor fix
+
+# Watch status continuously (30s interval)
+maiife-mcp-doctor status
 ```
 
-## MCP Server Usage
+---
 
-Add `@maiife-ai-pub/mcp-doctor` as an MCP server in your Claude Desktop or Cursor config:
+## MCP Server
 
 ```json
 {
   "mcpServers": {
-    "mcp-doctor": {
+    "maiife-mcp-doctor": {
       "command": "npx",
-      "args": ["@maiife-ai-pub/mcp-doctor", "mcp"],
-      "env": {}
+      "args": ["@maiife-ai-pub/mcp-doctor", "mcp"]
     }
   }
 }
 ```
 
-Once configured, Claude/Cursor can call tools like `check_servers`, `diagnose_server`, and `apply_fix` directly from the chat interface.
+**Available tools:** `mcp_doctor_checkup`, `mcp_doctor_fix`, `mcp_doctor_status`
 
-### Docker
-
-```bash
-docker run -i ghcr.io/sakthivelchan89/maiife-mcp-doctor
-```
+---
 
 ## Programmatic API
 
-```typescript
-import { checkServers, diagnoseServer, DiagnosticSeverity } from "@maiife-ai-pub/mcp-doctor";
+```ts
+import { runCheckup, watchServers } from "@maiife-ai-pub/mcp-doctor";
+import { parseAllMCPConfigs } from "@maiife-ai-pub/mcp-audit";
 
-// Check all servers
-const results = await checkServers({ configPath: "./mcp.json" });
+// One-shot health check
+const report = await runCheckup();
+console.log(`${report.summary.healthy}/${report.summary.total} servers healthy`);
 
-for (const result of results) {
-  if (result.severity === DiagnosticSeverity.ERROR) {
-    console.error(`${result.name}: ${result.message}`);
-  }
-}
-
-// Diagnose a single server and get fix suggestions
-const diagnosis = await diagnoseServer({
-  name: "github",
-  command: "npx",
-  args: ["-y", "@modelcontextprotocol/server-github"],
+// Continuous watch — calls onReport every 60 seconds
+const servers = parseAllMCPConfigs();
+const stop = watchServers(servers, {
+  intervalMs: 60_000,
+  onReport: (r) => console.log(`${r.summary.healthy}/${r.summary.total} healthy`),
+  onStatusChange: (name, prev, curr) => console.warn(`${name}: ${prev} → ${curr}`),
 });
 
-console.log(diagnosis.suggestions);
+// Stop watching
+stop();
 ```
+
+---
+
+## Health Statuses
+
+| Status | Meaning |
+|--------|---------|
+| `healthy` | Server responds correctly |
+| `degraded` | Responds but with errors or high latency |
+| `stale` | Config exists but server has not been seen recently |
+| `dead` | Unreachable or failing startup |
+
+---
 
 ## License
 
-Apache 2.0 — see [LICENSE](./LICENSE)
-
-Built by [Maiife](https://maiife.ai) — Enterprise AI Control Plane.
+[Apache 2.0](../../LICENSE) — Built by [Maiife](https://maiife.ai)

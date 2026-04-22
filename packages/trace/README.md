@@ -1,68 +1,43 @@
 # @maiife-ai-pub/trace
 
-Agent workflow tracer — trace, view, and analyze agent execution spans across tool calls and LLM steps.
+> Agent workflow tracer — trace, view, and analyze agent execution spans with OTLP export support.
 
-Part of the [Maiife](https://maiife.ai) OSS toolkit for AI governance.
+[![npm](https://img.shields.io/npm/v/@maiife-ai-pub/trace)](https://www.npmjs.com/package/@maiife-ai-pub/trace)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue)](../../LICENSE)
+
+Part of the [Maiife AI Governance Toolkit](https://github.com/sakthivelchan89/scan_your_ai_toolkit).
+
+---
 
 ## Install
 
 ```bash
+npm install -g @maiife-ai-pub/trace
+# or use as a library
 npm install @maiife-ai-pub/trace
 ```
 
-Or use directly without installing:
+---
+
+## CLI
 
 ```bash
-npx @maiife-ai-pub/trace view trace.json
+# List recent traces
+maiife-trace list
+
+# List traces from last 7 days
+maiife-trace list --days 7
+
+# View a specific trace
+maiife-trace view --id <traceId>
+
+# Analyze traces for patterns
+maiife-trace analyze
 ```
 
-## CLI Usage
+---
 
-### View a trace file
-
-```bash
-npx @maiife-ai-pub/trace view trace.json
-```
-
-Example output:
-
-```
-Maiife Trace v0.1.0
-
-Trace: customer-query-20260404-1432
-  Duration: 4.2s   Spans: 7   Tokens: 1,847   Cost: $0.0041
-
-  Span Timeline
-    0ms    llm.call        gpt-4o          312ms   200 tokens
-    312ms  tool.call       search_docs     891ms
-    1203ms llm.call        gpt-4o          1102ms  618 tokens
-    2305ms tool.call       send_reply      204ms
-    2509ms llm.call        gpt-4o          891ms   917 tokens
-    3400ms tool.call       log_interaction 81ms
-    3481ms agent.complete  -               -
-
-  Issues: none
-```
-
-### Watch a trace directory
-
-```bash
-npx @maiife-ai-pub/trace watch ./traces/
-```
-
-### Output formats
-
-```bash
-npx @maiife-ai-pub/trace view trace.json --format json
-npx @maiife-ai-pub/trace view trace.json --format table
-npx @maiife-ai-pub/trace view trace.json --format html > report.html
-```
-
-## MCP Server Usage
-
-Add `@maiife-ai-pub/trace` as an MCP server so AI assistants can introspect execution traces.
-
-### Claude Desktop (`~/Library/Application Support/Claude/claude_desktop_config.json`)
+## MCP Server
 
 ```json
 {
@@ -75,53 +50,31 @@ Add `@maiife-ai-pub/trace` as an MCP server so AI assistants can introspect exec
 }
 ```
 
-### Cursor (`.cursor/mcp.json` in your project or `~/.cursor/mcp.json` globally)
+**Available tools:** `trace_list`, `trace_view`, `trace_analyze`
 
-```json
-{
-  "mcpServers": {
-    "maiife-trace": {
-      "command": "npx",
-      "args": ["@maiife-ai-pub/trace", "mcp"]
-    }
-  }
-}
-```
-
-Once configured, your AI assistant can call tools like `trace_view`, `trace_summarize`, and `trace_compare`.
-
-### Docker
-
-```bash
-docker run -i ghcr.io/sakthivelchan89/maiife-trace
-```
+---
 
 ## Programmatic API
 
-```typescript
-import { loadTrace, summarize } from "@maiife-ai-pub/trace";
+```ts
+import { createTracer, exportOTELFile } from "@maiife-ai-pub/trace";
 
-const trace = await loadTrace("./traces/customer-query-20260404.json");
-const summary = summarize(trace);
+const tracer = createTracer();
 
-console.log(summary.totalDuration);  // ms
-console.log(summary.totalTokens);    // number
-console.log(summary.totalCost);      // USD
-console.log(summary.spans);          // array of spans
+const id = tracer.startTrace("my-agent", "chat-completion");
+tracer.addSpan(id, "llm-call", { model: "claude-sonnet-4-6", tokens: 1200 });
+tracer.endTrace(id, "success");
+
+// Export as OTLP/JSON for Jaeger, Grafana Tempo, etc.
+exportOTELFile(tracer.getAll());
 ```
 
-### Types
+Traces are persisted to `~/.maiife/traces/` automatically on `endTrace`.
 
-```typescript
-import type { Trace, Span, TraceSummary } from "@maiife-ai-pub/trace";
-```
+Set `OTEL_EXPORTER_OTLP_ENDPOINT` to push traces to an observability backend.
 
-## Requirements
-
-- Node.js >= 18
+---
 
 ## License
 
-Apache 2.0 — see [LICENSE](./LICENSE)
-
-Copyright 2026 Maiife — [maiife.ai](https://maiife.ai)
+[Apache 2.0](../../LICENSE) — Built by [Maiife](https://maiife.ai)

@@ -1,6 +1,6 @@
 {
   "name": "@maiife-ai-pub/mcp-doctor",
-  "version": "0.1.4",
+  "version": "0.2.2",
   "description": "MCP Server Health Check & Auto-Fixer — brew doctor for your MCP setup",
   "type": "module",
   "main": "./dist/index.js",

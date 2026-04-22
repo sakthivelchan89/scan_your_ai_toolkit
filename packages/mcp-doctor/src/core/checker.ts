@@ -6,7 +6,7 @@ import type { ServerHealth, HealthCheck, HealthStatus } from "./types.js";
 function checkCommandExists(command: string): HealthCheck {
   try {
     const whichCmd = process.platform === "win32" ? "where" : "which";
-    childProcess.execFileSync(whichCmd, [command], { stdio: "pipe" });
+    childProcess.execSync(`${whichCmd} ${command}`, { stdio: "pipe" });
     return { name: "command_exists", passed: true, details: `${command} found in PATH` };
   } catch {
     return { name: "command_exists", passed: false, details: `${command} not found in PATH` };
@@ -17,7 +17,7 @@ function checkNpxPackage(args: string[]): HealthCheck {
   const pkgArg = args.find((a) => a.startsWith("@") || (!a.startsWith("-") && a !== "-y"));
   if (!pkgArg) return { name: "npx_package", passed: true, details: "No package to verify" };
   try {
-    childProcess.execFileSync("npm", ["view", pkgArg, "version"], { stdio: "pipe", timeout: 5000 });
+    childProcess.execSync(`npm view ${pkgArg} version`, { stdio: "pipe", timeout: 5000 });
     return { name: "npx_package", passed: true, details: `${pkgArg} available on npm` };
   } catch {
     return { name: "npx_package", passed: false, details: `${pkgArg} not found on npm` };

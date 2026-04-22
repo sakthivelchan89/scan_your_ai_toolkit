@@ -1,80 +1,69 @@
 # @maiife-ai-pub/weekly-ai-report
 
-Your AI Week in Review — Spotify Wrapped for your AI usage, weekly.
+> Your AI week in review — Spotify Wrapped for your AI usage, delivered weekly.
 
-Generates a rich weekly digest of your AI activity using data from `@maiife-ai-pub/ai-journal`: top models used, token spend, productivity wins, and AI-generated highlights for the week.
+[![npm](https://img.shields.io/npm/v/@maiife-ai-pub/weekly-ai-report)](https://www.npmjs.com/package/@maiife-ai-pub/weekly-ai-report)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue)](../../LICENSE)
 
-Part of the [Maiife OSS Toolkit](https://maiife.ai) for enterprise AI governance.
+Part of the [Maiife AI Governance Toolkit](https://github.com/sakthivelchan89/scan_your_ai_toolkit).
+
+---
 
 ## Install
 
 ```bash
-npm install @maiife-ai-pub/weekly-ai-report
-```
-
-## CLI Usage
-
-### Generate this week's report
-
-```bash
+npm install -g @maiife-ai-pub/weekly-ai-report
+# or run without installing
 npx @maiife-ai-pub/weekly-ai-report generate
 ```
 
-Example output:
+---
 
-```
-Your AI Week in Review  (Mar 31 – Apr 6, 2026)
-
-  Total sessions      47
-  Total tokens        284,000
-  Estimated cost      $3.12
-  Top model           claude-3-5-sonnet (62% of sessions)
-  Most active day     Tuesday
-
-  Highlights:
-    - Shipped 3 features with AI assistance
-    - Saved ~4.2 hours on code review
-    - Top task: code generation (48%)
-
-  Trend vs last week:  +12% sessions,  -8% cost (more efficient!)
-```
-
-### Generate for a specific week
+## CLI
 
 ```bash
-npx @maiife-ai-pub/weekly-ai-report generate --week 2026-03-24
+# Generate this week's report
+maiife-weekly-ai-report generate
+
+# Generate for a specific period
+maiife-weekly-ai-report generate --period 2026-W14
+
+# Output as JSON
+maiife-weekly-ai-report generate --format json
 ```
 
-### Export as HTML
-
-```bash
-npx @maiife-ai-pub/weekly-ai-report generate --format html --output report.html
-```
+---
 
 ## Programmatic API
 
-```typescript
-import { generateReport, WeeklyReport, ReportFormat } from "@maiife-ai-pub/weekly-ai-report";
+```ts
+import { collectWeeklyData, generateWeeklyReport } from "@maiife-ai-pub/weekly-ai-report";
+import { collectFromJSON, collectFromCSV } from "@maiife-ai-pub/weekly-ai-report";
 
-// Generate for the current week
-const report: WeeklyReport = await generateReport({
-  weekStart: new Date("2026-03-31"),
-  journalPath: "~/.maiife/journal",
-});
+// Collect from ai-journal export
+const report = collectFromJSON("~/.maiife/journal.json", "2026-W14");
 
-console.log(`Sessions: ${report.totalSessions}`);
-console.log(`Cost: $${report.estimatedCost.toFixed(2)}`);
-console.log(`Top model: ${report.topModel}`);
+// Or from a CSV export
+const report2 = collectFromCSV("./usage-export.csv");
 
-// Export to HTML
-const html = await generateReport({
-  weekStart: new Date("2026-03-31"),
-  format: ReportFormat.HTML,
-});
+console.log(`Top tool:  ${report.topTool}`);
+console.log(`Top task:  ${report.topTask}`);
+console.log(`Total time: ${report.totalMinutes} min`);
 ```
+
+---
+
+## What's in a report
+
+- Top AI tool of the week
+- Most common task type
+- Total time spent with AI
+- Longest single session
+- Weekly trend vs prior week
+- Personalized insight
+
+---
 
 ## License
 
-Apache 2.0 — see [LICENSE](./LICENSE)
-
-Built by [Maiife](https://maiife.ai) — Enterprise AI Control Plane.
+[Apache 2.0](../../LICENSE) — Built by [Maiife](https://maiife.ai)

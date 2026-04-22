@@ -5,11 +5,17 @@ const OVERLAP_GROUPS: { tools: string[]; description: string }[] = [
   { tools: ["ChatGPT Plus", "Claude Pro"], description: "Both provide chat AI — keep primary, use API for secondary" },
 ];
 
-export function analyzeSubscriptions(subscriptions: Subscription[]): AuditReport {
+export interface AuditOptions {
+  /** Subscriptions with fewer than this many uses in 30 days are flagged as waste. Default: 5 */
+  minUsagePer30d?: number;
+}
+
+export function analyzeSubscriptions(subscriptions: Subscription[], options: AuditOptions = {}): AuditReport {
+  const { minUsagePer30d = 5 } = options;
   const totalMonthlyCost = subscriptions.reduce((sum, s) => sum + s.monthlyCost, 0);
   const wasteItems: WasteItem[] = [];
   for (const sub of subscriptions) {
-    if (sub.monthlyCost > 0 && sub.usageLast30d < 5) {
+    if (sub.monthlyCost > 0 && sub.usageLast30d < minUsagePer30d) {
       wasteItems.push({
         subscription: sub.name, monthlyCost: sub.monthlyCost,
         reason: sub.usageLast30d === 0 ? "No usage in 30 days" : `Only ${sub.usageLast30d} uses in 30 days`,

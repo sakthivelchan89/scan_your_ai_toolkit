@@ -1,4 +1,4 @@
-import { getEntries, addEntry, removeEntry } from "../core/store.js";
+import { getEntries, addEntry } from "../core/store.js";
 import { pushAll, getStatus } from "../core/sync.js";
 import { createCursorRulesTarget, createClaudeTarget, createMCPMemoryTarget } from "../core/targets/index.js";
 

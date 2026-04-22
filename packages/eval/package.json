@@ -1,6 +1,6 @@
 {
   "name": "@maiife-ai-pub/eval",
-  "version": "0.1.4",
+  "version": "0.2.2",
   "description": "LLM-as-judge evaluation engine — score agent outputs with structured rubrics",
   "type": "module",
   "main": "./dist/index.js",

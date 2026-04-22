@@ -1,119 +1,82 @@
 # @maiife-ai-pub/mcp-audit
 
-MCP server security scanner — score configs on permissions, data sensitivity, blast radius.
+> MCP server security scanner — score your MCP configurations on permissions, data sensitivity, and blast radius.
 
-Part of the [Maiife OSS Toolkit](https://maiife.ai) for enterprise AI governance.
+[![npm](https://img.shields.io/npm/v/@maiife-ai-pub/mcp-audit)](https://www.npmjs.com/package/@maiife-ai-pub/mcp-audit)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue)](../../LICENSE)
+
+Part of the [Maiife AI Governance Toolkit](https://github.com/sakthivelchan89/scan_your_ai_toolkit).
+
+---
 
 ## Install
 
 ```bash
-npm install @maiife-ai-pub/mcp-audit
-```
-
-## CLI Usage
-
-### Scan all configured MCP servers
-
-```bash
+npm install -g @maiife-ai-pub/mcp-audit
+# or run without installing
 npx @maiife-ai-pub/mcp-audit scan
 ```
 
-Example output:
+---
 
-```
-Scanning MCP servers...
-
-  filesystem      Grade: B  Score: 72  [permissions: medium, data: low, blast: medium]
-  github          Grade: C  Score: 58  [permissions: high, data: medium, blast: high]
-  database-proxy  Grade: D  Score: 41  [permissions: high, data: high, blast: critical]
-
-3 servers scanned. 1 critical risk found.
-```
-
-### Score a specific server
+## CLI
 
 ```bash
-npx @maiife-ai-pub/mcp-audit score --server github
+# Scan all MCP configs found on this machine
+maiife-mcp-audit scan
+
+# Score a specific server by name
+maiife-mcp-audit score --server filesystem
 ```
 
-Example output:
+---
 
-```
-Security Score: github
-  Permissions score:  45 / 100  (read + write + delete tools detected)
-  Data sensitivity:   60 / 100  (accesses repository content)
-  Blast radius:       55 / 100  (cross-repo tool calls possible)
-
-  Overall grade: C  (Score: 53)
-  Recommendation: Restrict tool list to read-only operations for untrusted agents.
-```
-
-## MCP Server Usage
-
-Add `@maiife-ai-pub/mcp-audit` as an MCP server in your Claude Desktop or Cursor config:
+## MCP Server
 
 ```json
 {
   "mcpServers": {
-    "mcp-audit": {
+    "maiife-mcp-audit": {
       "command": "npx",
-      "args": ["@maiife-ai-pub/mcp-audit", "mcp"],
-      "env": {}
+      "args": ["@maiife-ai-pub/mcp-audit", "serve"]
     }
   }
 }
 ```
 
-Once configured, Claude/Cursor can call tools like `scan_servers`, `score_server`, and `list_risks` directly from the chat interface.
+**Available tools:** `mcp_audit_scan`, `mcp_audit_score`
 
-### Docker
-
-```bash
-docker run -i ghcr.io/sakthivelchan89/maiife-mcp-audit
-```
+---
 
 ## Programmatic API
 
-```typescript
-import { scanServers, scoreServer, SecurityGrade } from "@maiife-ai-pub/mcp-audit";
+```ts
+import { parseAllMCPConfigs, scoreServer } from "@maiife-ai-pub/mcp-audit";
 
-// Scan all servers from a config file
-const results = await scanServers({ configPath: "./mcp.json" });
-
-for (const result of results) {
-  console.log(`${result.name}: ${result.grade} (${result.score})`);
-}
-
-// Score a single server definition
-const score = await scoreServer({
-  name: "my-server",
-  command: "node",
-  args: ["./server.js"],
-  tools: ["read_file", "write_file", "execute_command"],
-});
-
-if (score.grade === SecurityGrade.D || score.grade === SecurityGrade.F) {
-  console.warn("High-risk server detected:", score.recommendations);
+const servers = parseAllMCPConfigs();
+for (const server of servers) {
+  const card = scoreServer(server);
+  console.log(`${card.serverName}: ${card.overall}/100 (${card.grade})`);
 }
 ```
 
-## CI Integration
+---
 
-Fail the build if any server scores below a threshold:
+## Scoring
 
-```bash
-npx @maiife-ai-pub/mcp-audit scan --ci --min-grade B
-```
+Each server is scored across four dimensions:
 
-Exit code is `0` if all servers meet the threshold, `1` otherwise. Use in GitHub Actions:
+| Dimension | Description |
+|-----------|-------------|
+| **Permissions** | File system access, shell execution, network calls |
+| **Data sensitivity** | Access to credentials, secrets, personal data |
+| **Blast radius** | Scope of potential damage if compromised |
+| **Supply chain** | Source verification, known vulnerabilities |
 
-```yaml
-- name: Audit MCP servers
-  run: npx @maiife-ai-pub/mcp-audit scan --ci --min-grade B
-```
+Score `≥80` = safe · `60–79` = review recommended · `<60` = high risk
+
+---
 
 ## License
 
-Apache 2.0 — see [LICENSE](./LICENSE)
-
-Built by [Maiife](https://maiife.ai) — Enterprise AI Control Plane.
+[Apache 2.0](../../LICENSE) — Built by [Maiife](https://maiife.ai)

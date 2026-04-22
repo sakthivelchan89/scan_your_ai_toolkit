@@ -1,0 +1,10 @@
+{
+  "entries": [
+    {"key": "project-goal", "value": "Build an enterprise AI control plane for governed multi-vendor access", "category": "project"},
+    {"key": "tech-stack", "value": "TypeScript, Fastify, Next.js 15, Supabase, pnpm monorepo", "category": "project"},
+    {"key": "coding-style", "value": "Functional > OOP, explicit error handling, no any types, vitest for tests", "category": "preferences"},
+    {"key": "team-context", "value": "Solo founder, 2 design partners onboarding, pre-seed stage", "category": "team"},
+    {"key": "current-sprint", "value": "Sprint 3: Make toolkit packages publishable for design partners", "category": "project"},
+    {"key": "auth-system", "value": "Supabase Auth with cookie-based sessions, dual path API key + JWT", "category": "architecture"}
+  ]
+}

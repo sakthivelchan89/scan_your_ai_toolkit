@@ -45,9 +45,9 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
   const { name, arguments: args } = request.params;
   try {
-    const params = (args ?? {}) as any;
-    if (name === "prompt_craft_score") { const r = await promptCraftScore(params); return { content: [{ type: "text" as const, text: JSON.stringify(r, null, 2) }] }; }
-    if (name === "prompt_craft_improve") { const r = await promptCraftImprove(params); return { content: [{ type: "text" as const, text: JSON.stringify(r, null, 2) }] }; }
+    const params = args as Record<string, unknown> ?? {};
+    if (name === "prompt_craft_score") { const r = await promptCraftScore(params as Parameters<typeof promptCraftScore>[0]); return { content: [{ type: "text" as const, text: JSON.stringify(r, null, 2) }] }; }
+    if (name === "prompt_craft_improve") { const r = await promptCraftImprove(params as Parameters<typeof promptCraftImprove>[0]); return { content: [{ type: "text" as const, text: JSON.stringify(r, null, 2) }] }; }
     if (name === "prompt_craft_profile") { const r = await promptCraftProfile(); return { content: [{ type: "text" as const, text: JSON.stringify(r, null, 2) }] }; }
     if (name === "prompt_craft_challenge") { const r = await promptCraftChallenge(); return { content: [{ type: "text" as const, text: JSON.stringify(r, null, 2) }] }; }
     throw new Error(`Unknown tool: ${name}`);
@@ -58,3 +58,6 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 });
 
 export async function startMCPServer() { const t = new StdioServerTransport(); await server.connect(t); }
+
+// Auto-start when run directly
+startMCPServer().catch(console.error);

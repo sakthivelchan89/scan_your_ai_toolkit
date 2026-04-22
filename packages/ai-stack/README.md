@@ -1,88 +1,79 @@
 # @maiife-ai-pub/ai-stack
 
-What's Your AI Stack? — Generate a shareable profile card of your AI toolkit.
+> What's Your AI Stack? — Generate a shareable profile card of your AI toolkit with complexity score and tool breakdown.
 
-Detects your installed AI tools, models, MCP servers, and IDE integrations, then renders a shareable card showing your complete AI setup. Powered by `@maiife-ai-pub/probe`.
+[![npm](https://img.shields.io/npm/v/@maiife-ai-pub/ai-stack)](https://www.npmjs.com/package/@maiife-ai-pub/ai-stack)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue)](../../LICENSE)
 
-Part of the [Maiife OSS Toolkit](https://maiife.ai) for enterprise AI governance.
+Part of the [Maiife AI Governance Toolkit](https://github.com/sakthivelchan89/scan_your_ai_toolkit).
+
+---
 
 ## Install
 
 ```bash
-npm install @maiife-ai-pub/ai-stack
+npm install -g @maiife-ai-pub/ai-stack
+# or run without installing
+npx @maiife-ai-pub/ai-stack --format svg --output my-stack.svg
 ```
 
-## CLI Usage
+---
 
-### Generate your AI stack profile
+## CLI
 
 ```bash
-npx @maiife-ai-pub/ai-stack generate
+# Print your AI stack as SVG (default)
+maiife-ai-stack
+
+# Output as markdown badge
+maiife-ai-stack --format markdown
+
+# Output as JSON
+maiife-ai-stack --format json
+
+# Save to file
+maiife-ai-stack --format svg --output my-stack.svg
+
+# Scan a specific directory
+maiife-ai-stack --path /path/to/project
 ```
 
-Example output:
+---
 
-```
-Your AI Stack
-
-  IDE             VS Code + Cursor (Copilot enabled)
-  MCP Servers     filesystem, github, database-proxy
-  Local Models    llama3.2, mistral-7b (via Ollama)
-  Cloud APIs      OpenAI, Anthropic
-  Agents          Claude Code, Copilot Chat
-
-Stack score: 92 / 100  (Enterprise-grade setup)
-Shareable link: https://maiife.ai/stack/abc123
-```
-
-### Export as JSON
-
-```bash
-npx @maiife-ai-pub/ai-stack generate --format json
-```
-
-## MCP Server Usage
-
-Add `@maiife-ai-pub/ai-stack` as an MCP server in your Claude Desktop or Cursor config:
+## MCP Server
 
 ```json
 {
   "mcpServers": {
-    "ai-stack": {
+    "maiife-ai-stack": {
       "command": "npx",
-      "args": ["@maiife-ai-pub/ai-stack", "mcp"],
-      "env": {}
+      "args": ["@maiife-ai-pub/ai-stack", "mcp"]
     }
   }
 }
 ```
 
-Once configured, Claude/Cursor can call tools like `get_stack`, `generate_card`, and `compare_stacks` directly from the chat interface.
+**Available tools:** `ai_stack_generate`
 
-### Docker
-
-```bash
-docker run -i ghcr.io/sakthivelchan89/maiife-ai-stack
-```
+---
 
 ## Programmatic API
 
-```typescript
-import { generateStack, renderCard, StackProfile } from "@maiife-ai-pub/ai-stack";
+```ts
+import { buildAIStackProfile, aggregateTeamStack } from "@maiife-ai-pub/ai-stack";
 
-// Detect everything installed on this machine
-const profile: StackProfile = await generateStack();
+// Profile a single developer's stack
+const profile = await buildAIStackProfile({ path: process.cwd() });
+console.log(`Stack complexity: ${profile.complexity.total}/100 (${profile.complexity.level})`);
 
-console.log(`IDE: ${profile.ide}`);
-console.log(`MCP Servers: ${profile.mcpServers.join(", ")}`);
-console.log(`Local Models: ${profile.localModels.join(", ")}`);
-
-// Render as a shareable HTML card
-const card = renderCard(profile, { theme: "dark" });
+// Aggregate across a team
+const teamMap = new Map([["alice", profileA], ["bob", profileB]]);
+const team = aggregateTeamStack(teamMap);
+console.log(`Team fragmentation: ${team.fragmentationScore}%`);
 ```
+
+---
 
 ## License
 
-Apache 2.0 — see [LICENSE](./LICENSE)
-
-Built by [Maiife](https://maiife.ai) — Enterprise AI Control Plane.
+[Apache 2.0](../../LICENSE) — Built by [Maiife](https://maiife.ai)

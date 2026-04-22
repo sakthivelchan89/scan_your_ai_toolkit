@@ -52,10 +52,10 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
   const { name, arguments: args } = request.params;
   try {
-    const params = (args ?? {}) as any;
-    if (name === "trace_list") { const r = await traceList(params); return { content: [{ type: "text" as const, text: JSON.stringify(r, null, 2) }] }; }
-    if (name === "trace_view") { const r = await traceView(params); return { content: [{ type: "text" as const, text: typeof r === "string" ? r : JSON.stringify(r, null, 2) }] }; }
-    if (name === "trace_analyze") { const r = await traceAnalyze(params); return { content: [{ type: "text" as const, text: JSON.stringify(r, null, 2) }] }; }
+    const params = args as Record<string, unknown> ?? {};
+    if (name === "trace_list") { const r = await traceList(params as Parameters<typeof traceList>[0]); return { content: [{ type: "text" as const, text: JSON.stringify(r, null, 2) }] }; }
+    if (name === "trace_view") { const r = await traceView(params as Parameters<typeof traceView>[0]); return { content: [{ type: "text" as const, text: typeof r === "string" ? r : JSON.stringify(r, null, 2) }] }; }
+    if (name === "trace_analyze") { const r = await traceAnalyze(params as Parameters<typeof traceAnalyze>[0]); return { content: [{ type: "text" as const, text: JSON.stringify(r, null, 2) }] }; }
     throw new Error(`Unknown tool: ${name}`);
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
@@ -64,3 +64,6 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 });
 
 export async function startMCPServer() { const t = new StdioServerTransport(); await server.connect(t); }
+
+// Auto-start when run directly
+startMCPServer().catch(console.error);

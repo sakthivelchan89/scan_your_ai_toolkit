@@ -1,5 +1,5 @@
 import type { ProbeResult } from "@maiife-ai-pub/probe";
-import type { AIStackProfile, StackCategory, StackItem } from "./types.js";
+import type { AIStackProfile, StackCategory } from "./types.js";
 import { computeComplexity } from "./complexity.js";
 
 function buildCategories(result: ProbeResult): StackCategory[] {
