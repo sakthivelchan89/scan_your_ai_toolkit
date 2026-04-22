@@ -1,0 +1,65 @@
+{
+  "name": "@maiife-ai-pub/ai-toolkit",
+  "version": "0.2.3",
+  "description": "Maiife AI Governance Toolkit — all 15 packages in one install",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "bin": {
+    "maiife-ai-toolkit": "./dist/cli/index.js",
+    "ai-toolkit": "./dist/cli/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "echo 'meta-package — no unit tests'"
+  },
+  "devDependencies": {
+    "commander": "^13.1.0"
+  },
+  "dependencies": {
+    "commander": "^13.1.0",
+    "@maiife-ai-pub/probe": "^0.2.2",
+    "@maiife-ai-pub/ai-stack": "^0.2.2",
+    "@maiife-ai-pub/ai-journal": "^0.2.2",
+    "@maiife-ai-pub/context-sync": "^0.2.2",
+    "@maiife-ai-pub/cost": "^0.2.2",
+    "@maiife-ai-pub/eval": "^0.2.2",
+    "@maiife-ai-pub/mcp-audit": "^0.2.2",
+    "@maiife-ai-pub/mcp-doctor": "^0.2.2",
+    "@maiife-ai-pub/model-match": "^0.2.2",
+    "@maiife-ai-pub/prompt-craft": "^0.2.2",
+    "@maiife-ai-pub/prompt-score": "^0.2.2",
+    "@maiife-ai-pub/shared": "^0.2.2",
+    "@maiife-ai-pub/sub-audit": "^0.2.2",
+    "@maiife-ai-pub/trace": "^0.2.2",
+    "@maiife-ai-pub/weekly-ai-report": "^0.2.2"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sakthivelchan89/scan_your_ai_toolkit"
+  },
+  "keywords": [
+    "ai",
+    "governance",
+    "mcp",
+    "toolkit",
+    "prompt-scoring",
+    "ai-audit",
+    "model-context-protocol"
+  ]
+}

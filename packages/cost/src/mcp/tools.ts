@@ -1,9 +1,9 @@
-import { createOpenAIAdapter, createAnthropicAdapter, createLocalAdapter } from "../core/adapters/index.js";
+import { createOpenAIAdapter, createAnthropicAdapter, createCohereAdapter, createGoogleAdapter, createLocalAdapter } from "../core/adapters/index.js";
 import { generateReport } from "../core/report.js";
 import { suggestOptimizations } from "../core/optimizer.js";
 import type { UsageRecord } from "../core/types.js";
 
-const adapters = [createOpenAIAdapter(), createAnthropicAdapter(), createLocalAdapter()];
+const adapters = [createOpenAIAdapter(), createAnthropicAdapter(), createCohereAdapter(), createGoogleAdapter(), createLocalAdapter()];
 
 function parseDays(period: string): number {
   const match = period.match(/(\d+)/);

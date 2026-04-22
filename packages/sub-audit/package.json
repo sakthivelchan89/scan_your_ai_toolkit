@@ -1,6 +1,6 @@
 {
   "name": "@maiife-ai-pub/sub-audit",
-  "version": "0.1.4",
+  "version": "0.2.2",
   "description": "Personal AI Subscription Auditor — find waste in your AI spending",
   "type": "module",
   "main": "./dist/index.js",

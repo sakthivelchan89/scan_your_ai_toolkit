@@ -1,0 +1,11 @@
+{
+  "name": "acme-ai-app",
+  "version": "1.0.0",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.30.0",
+    "openai": "^4.50.0",
+    "@google/generative-ai": "^0.15.0",
+    "langchain": "^0.3.0",
+    "@vercel/ai": "^4.0.0"
+  }
+}

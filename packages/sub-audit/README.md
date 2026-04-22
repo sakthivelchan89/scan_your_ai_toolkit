@@ -1,93 +1,80 @@
 # @maiife-ai-pub/sub-audit
 
-Personal AI Subscription Auditor — find waste in your AI spending.
+> Personal AI subscription auditor — find waste and overlaps in your AI spending before your next renewal.
 
-Analyzes your AI subscriptions, API usage, and token costs via `@maiife-ai-pub/cost` to surface duplicate tools, unused seats, and overpaying for capacity you don't use.
+[![npm](https://img.shields.io/npm/v/@maiife-ai-pub/sub-audit)](https://www.npmjs.com/package/@maiife-ai-pub/sub-audit)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue)](../../LICENSE)
 
-Part of the [Maiife OSS Toolkit](https://maiife.ai) for enterprise AI governance.
+Part of the [Maiife AI Governance Toolkit](https://github.com/sakthivelchan89/scan_your_ai_toolkit).
+
+---
 
 ## Install
 
 ```bash
-npm install @maiife-ai-pub/sub-audit
+npm install -g @maiife-ai-pub/sub-audit
+# or run without installing
+npx @maiife-ai-pub/sub-audit
 ```
 
-## CLI Usage
+---
 
-### Audit all AI subscriptions
+## CLI
 
 ```bash
-npx @maiife-ai-pub/sub-audit audit
+# Run the subscription audit (table output)
+maiife-sub-audit
+
+# JSON output
+maiife-sub-audit --format json
 ```
 
-Example output:
+---
 
-```
-AI Subscription Audit
-
-  ChatGPT Plus     $20/mo    Usage: 12%   WASTE — consider free tier
-  Claude Pro       $20/mo    Usage: 78%   OK
-  GitHub Copilot   $10/mo    Usage: 91%   OK
-  Cursor Pro       $20/mo    Usage: 34%   WARN — low usage
-  OpenAI API       $47/mo    Usage: 100%  OPTIMIZE — consider batch API
-
-Monthly total: $117/mo
-Estimated savings: $34/mo (29%)
-```
-
-### Check a single provider
-
-```bash
-npx @maiife-ai-pub/sub-audit check --provider openai
-```
-
-## MCP Server Usage
-
-Add `@maiife-ai-pub/sub-audit` as an MCP server in your Claude Desktop or Cursor config:
+## MCP Server
 
 ```json
 {
   "mcpServers": {
-    "sub-audit": {
+    "maiife-sub-audit": {
       "command": "npx",
-      "args": ["@maiife-ai-pub/sub-audit", "mcp"],
-      "env": {}
+      "args": ["@maiife-ai-pub/sub-audit", "mcp"]
     }
   }
 }
 ```
 
-Once configured, Claude/Cursor can call tools like `audit_subscriptions`, `check_provider`, and `estimate_savings` directly from the chat interface.
+**Available tools:** `sub_audit_run`
 
-### Docker
-
-```bash
-docker run -i ghcr.io/sakthivelchan89/maiife-sub-audit
-```
+---
 
 ## Programmatic API
 
-```typescript
-import { auditSubscriptions, estimateSavings, SubscriptionStatus } from "@maiife-ai-pub/sub-audit";
+```ts
+import { detectSubscriptions, analyzeSubscriptions } from "@maiife-ai-pub/sub-audit";
 
-// Load subscriptions from config or env
-const results = await auditSubscriptions({
-  configPath: "./ai-subscriptions.json",
-});
+// Detect subscriptions from your environment
+const subscriptions = await detectSubscriptions();
 
-for (const sub of results) {
-  if (sub.status === SubscriptionStatus.WASTE) {
-    console.warn(`${sub.name}: $${sub.monthlyCost}/mo — ${sub.recommendation}`);
-  }
-}
+// Analyze for waste and overlaps
+const report = analyzeSubscriptions(subscriptions, { minUsagePer30d: 5 });
 
-// Calculate potential savings
-const savings = await estimateSavings(results);
-console.log(`Potential monthly savings: $${savings.total}`);
+console.log(`Monthly cost:      $${report.totalMonthlyCost}`);
+console.log(`Detected waste:    $${report.totalWaste}/mo`);
+console.log(`Estimated savings: $${report.savingsEstimate}/mo`);
 ```
+
+---
+
+## What it detects
+
+Scans for active API keys, installed tools, and running services to identify:
+- Unused or rarely-used subscriptions
+- Overlapping tools with the same capabilities
+- Free-tier alternatives for paid tools
+
+---
 
 ## License
 
-Apache 2.0 — see [LICENSE](./LICENSE)
-
-Built by [Maiife](https://maiife.ai) — Enterprise AI Control Plane.
+[Apache 2.0](../../LICENSE) — Built by [Maiife](https://maiife.ai)

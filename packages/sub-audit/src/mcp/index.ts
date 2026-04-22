@@ -29,3 +29,6 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 });
 
 export async function startMCPServer() { const t = new StdioServerTransport(); await server.connect(t); }
+
+// Auto-start when run directly
+startMCPServer().catch(console.error);

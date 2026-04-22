@@ -68,3 +68,6 @@ export async function startMCPServer() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
 }
+
+// Auto-start when run directly
+startMCPServer().catch(console.error);

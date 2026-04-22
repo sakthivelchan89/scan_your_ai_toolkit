@@ -1,6 +1,6 @@
 {
   "name": "@maiife-ai-pub/prompt-score",
-  "version": "0.1.4",
+  "version": "0.2.2",
   "description": "Prompt quality analyzer — score, improve, and lint your AI prompts",
   "type": "module",
   "main": "./dist/index.js",

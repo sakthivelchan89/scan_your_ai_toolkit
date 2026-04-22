@@ -42,7 +42,7 @@ function parseClaudeMd(content: string): ContextEntry[] {
 
 export function createClaudeTarget(): SyncTarget {
   return {
-    name: "claude" as any,
+    name: "claude" as const,
     description: "Sync to CLAUDE.md in the current project",
     async push(entries: ContextEntry[]): Promise<SyncResult> {
       try {

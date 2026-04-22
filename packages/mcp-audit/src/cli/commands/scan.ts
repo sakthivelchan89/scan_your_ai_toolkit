@@ -1,6 +1,10 @@
 import { parseAllMCPConfigs } from "../../core/config-parser.js";
 import { auditAll } from "../../core/scorer.js";
 import type { AuditResult, ScoreCard } from "../../core/types.js";
+import { resolvePostConfig } from "../../core/config.js";
+import { postFindings } from "../../core/post.js";
+import * as os from "node:os";
+import * as crypto from "node:crypto";
 
 function scoreBar(score: number, width = 12): string {
   const filled = Math.round((score / 100) * width);
@@ -42,6 +46,10 @@ export async function runScan(options: {
   format: string;
   ci: boolean;
   minGrade: string;
+  postTo?: string;
+  key?: string;
+  post?: boolean;
+  postOnly?: boolean;
 }): Promise<void> {
   const allServers = parseAllMCPConfigs(options.config);
   const filtered = options.servers
@@ -51,9 +59,38 @@ export async function runScan(options: {
   const result = auditAll(filtered, options.config ?? "auto-detected");
 
   if (options.format === "json") {
-    console.log(JSON.stringify(result, null, 2));
+    if (!options.postOnly) console.log(JSON.stringify(result, null, 2));
   } else {
-    printTable(result);
+    if (!options.postOnly) printTable(result);
+  }
+
+  // Opt-in POST to Maiife gateway.
+  const cfg = resolvePostConfig({
+    flags: { postTo: options.postTo, key: options.key },
+    env: process.env,
+  });
+
+  const postingEnabled = options.post !== false;
+  if (postingEnabled && cfg.gateway && cfg.apiKey) {
+    const payload = {
+      toolName: "mcp-audit" as const,
+      findings: result as unknown as Record<string, unknown>,
+      environment: {
+        os: `${os.platform()}-${os.release()}`,
+        hostnameHash: crypto.createHash("sha256").update(os.hostname()).digest("hex").slice(0, 16),
+        nodeVersion: process.version,
+      },
+      scannedAt: new Date().toISOString(),
+    };
+    const post = await postFindings({ gateway: cfg.gateway, apiKey: cfg.apiKey, payload });
+    if (post.ok) {
+      if (!options.postOnly) console.error(`  posted findings to ${cfg.gateway}`);
+    } else {
+      console.error(`  WARN: POST failed (${post.status ?? "network"}): ${post.error ?? ""}`);
+      if (options.postOnly) process.exit(1);
+    }
+  } else if (postingEnabled && cfg.gateway && !cfg.apiKey) {
+    console.error("  WARN: MAIIFE_GATEWAY set but MAIIFE_API_KEY missing; skipping POST");
   }
 
   // CI exit code: fail if any server is below min grade

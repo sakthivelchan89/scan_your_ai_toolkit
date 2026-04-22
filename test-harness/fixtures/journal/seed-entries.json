@@ -1,0 +1,7 @@
+[
+  {"timestamp": "2026-04-10T09:15:00Z", "tool": "claude-code", "task": "Implement auth middleware", "duration": 1800, "model": "claude-sonnet-4-20250514", "tokensUsed": 12500, "outcome": "completed"},
+  {"timestamp": "2026-04-10T11:00:00Z", "tool": "cursor", "task": "Debug N+1 query in dashboard", "duration": 2400, "model": "gpt-4o", "tokensUsed": 8200, "outcome": "completed"},
+  {"timestamp": "2026-04-10T14:30:00Z", "tool": "github-copilot", "task": "Write unit tests for policy engine", "duration": 3600, "model": "gpt-4o", "tokensUsed": 15000, "outcome": "partial"},
+  {"timestamp": "2026-04-11T09:00:00Z", "tool": "claude-code", "task": "Refactor vendor adapters", "duration": 5400, "model": "claude-sonnet-4-20250514", "tokensUsed": 28000, "outcome": "completed"},
+  {"timestamp": "2026-04-11T15:00:00Z", "tool": "windsurf", "task": "Create landing page hero section", "duration": 1200, "model": "claude-sonnet-4-20250514", "tokensUsed": 6500, "outcome": "completed"}
+]

@@ -2,7 +2,7 @@
 import { Command } from "commander";
 import { logInteraction } from "../core/logger.js";
 import { generateDigest } from "../core/digest.js";
-import { setLogging, isLogging } from "../core/store.js";
+import { setLogging } from "../core/store.js";
 
 const program = new Command();
 

@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/home/user/docs"],
+      "env": {}
+    },
+    "slack": {
+      "command": "npx",
+      "args": ["-y", "@anthropic-ai/mcp-server-slack"],
+      "env": { "SLACK_BOT_TOKEN": "xoxb-fake-000000" }
+    },
+    "database-admin": {
+      "command": "node",
+      "args": ["./db-admin-server.js"],
+      "env": { "DB_URL": "postgresql://admin:secret@prod-db:5432/main" }
+    }
+  }
+}

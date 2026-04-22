@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 import { Command } from "commander";
 import { traceList, traceView, traceAnalyze } from "../mcp/tools.js";
+import { listStoredTraces } from "../core/store.js";
+import { exportOTELFile, exportOTELHttp } from "../core/otel.js";
 
 const program = new Command();
 program.name("maiife-trace").description("Agent workflow tracer").version("0.1.0");
@@ -35,17 +37,31 @@ program.command("analyze").description("Analyze traces for patterns")
     console.log();
   });
 
-program
-  .command('mcp')
-  .description('Start MCP server over stdio')
+program.command("export").description("Export traces in OTLP/JSON format")
+  .option("--agent <name>", "Filter by agent")
+  .option("--days <n>", "Look back period", "7")
+  .option("--output <path>", "Output file path (omit to write to stdout)")
+  .option("--http <url>", "POST to OTLP HTTP endpoint (overrides OTEL_EXPORTER_OTLP_ENDPOINT)")
+  .action(async (opts) => {
+    const traces = listStoredTraces(opts.agent, parseInt(opts.days, 10));
+    if (traces.length === 0) {
+      console.error("No traces to export");
+      return;
+    }
+    if (opts.http || process.env.OTEL_EXPORTER_OTLP_ENDPOINT) {
+      await exportOTELHttp(traces, opts.http);
+      console.error(`  exported ${traces.length} trace(s) to ${opts.http ?? process.env.OTEL_EXPORTER_OTLP_ENDPOINT}`);
+    } else {
+      exportOTELFile(traces, opts.output);
+      if (opts.output) console.error(`  exported ${traces.length} trace(s) to ${opts.output}`);
+    }
+  });
+
+program.command('mcp')
+  .description('Start MCP server (stdio transport)')
   .action(async () => {
     const { startMCPServer } = await import('../mcp/index.js');
     await startMCPServer();
   });
 
-// If no arguments, default to MCP server (for npx/Glama/Claude Desktop)
-if (process.argv.length <= 2) {
-  import('../mcp/index.js').then(m => m.startMCPServer());
-} else {
-  program.parse();
-}
+program.parse();

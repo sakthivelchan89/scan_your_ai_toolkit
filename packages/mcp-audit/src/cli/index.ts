@@ -18,6 +18,10 @@ program
   .option("--format <format>", "Output format: json or table", "table")
   .option("--ci", "CI mode: exit with code 1 if any server is below min-grade", false)
   .option("--min-grade <grade>", "Minimum acceptable grade for CI mode", "B")
+  .option("--post-to <url>", "POST results to a Maiife gateway (overrides MAIIFE_GATEWAY env)")
+  .option("--key <mk>", "Maiife API key (overrides MAIIFE_API_KEY env)")
+  .option("--no-post", "Disable posting even if env is set")
+  .option("--post-only", "Exit 1 if POST fails; suppress local output")
   .action(async (options) => {
     await runScan(options);
   });
@@ -31,17 +35,11 @@ program
     await runScore(options);
   });
 
-program
-  .command('mcp')
-  .description('Start MCP server over stdio')
+program.command('mcp')
+  .description('Start MCP server (stdio transport)')
   .action(async () => {
     const { startMCPServer } = await import('../mcp/index.js');
     await startMCPServer();
   });
 
-// If no arguments, default to MCP server (for npx/Glama/Claude Desktop)
-if (process.argv.length <= 2) {
-  import('../mcp/index.js').then(m => m.startMCPServer());
-} else {
-  program.parse(process.argv);
-}
+program.parse(process.argv);

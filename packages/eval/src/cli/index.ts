@@ -56,17 +56,11 @@ program.command("compare").description("Compare baseline vs candidate")
 program.command("rubrics").description("List available rubrics")
   .action(() => { console.log("\nAvailable Rubrics\n"); for (const name of listRubrics()) console.log(`  - ${name}`); console.log(); });
 
-program
-  .command('mcp')
-  .description('Start MCP server over stdio')
+program.command('mcp')
+  .description('Start MCP server (stdio transport)')
   .action(async () => {
     const { startMCPServer } = await import('../mcp/index.js');
     await startMCPServer();
   });
 
-// If no arguments, default to MCP server (for npx/Glama/Claude Desktop)
-if (process.argv.length <= 2) {
-  import('../mcp/index.js').then(m => m.startMCPServer());
-} else {
-  program.parse();
-}
+program.parse();

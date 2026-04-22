@@ -1,6 +1,6 @@
 {
   "name": "@maiife-ai-pub/context-sync",
-  "version": "0.1.4",
+  "version": "0.2.2",
   "description": "Cross-Tool AI Memory Sync — one source of truth for your AI context, synced everywhere",
   "type": "module",
   "main": "./dist/index.js",

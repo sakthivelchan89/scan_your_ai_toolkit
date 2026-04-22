@@ -1,87 +1,61 @@
 # @maiife-ai-pub/probe
 
-AI environment scanner — discover IDE extensions, MCP servers, agent frameworks, API keys, local models, and dependencies across your development environment.
+> AI environment scanner — discover IDE extensions, MCP servers, agent frameworks, API keys, and local models running on your machine.
 
-Part of the [Maiife](https://maiife.ai) OSS toolkit for AI governance.
+[![npm](https://img.shields.io/npm/v/@maiife-ai-pub/probe)](https://www.npmjs.com/package/@maiife-ai-pub/probe)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue)](../../LICENSE)
+
+Part of the [Maiife AI Governance Toolkit](https://github.com/sakthivelchan89/scan_your_ai_toolkit).
+
+---
 
 ## Install
 
 ```bash
-npm install @maiife-ai-pub/probe
-```
-
-Or use directly without installing:
-
-```bash
+npm install -g @maiife-ai-pub/probe
+# or run without installing
 npx @maiife-ai-pub/probe scan
 ```
 
-## CLI Usage
+---
 
-### Scan your environment
-
-```bash
-npx @maiife-ai-pub/probe scan
-```
-
-Example output:
-
-```
-Maiife Probe — AI Environment Scanner v0.1.0
-
-Scanning environment...
-
-IDE Extensions
-  VS Code
-    GitHub Copilot          1.234.0   active
-    Continue                0.9.12    active
-    Cursor                  0.42.0    active
-
-MCP Servers
-  Claude Desktop
-    filesystem              local     configured
-    github                  remote    configured
-
-Agent Frameworks
-  Detected: LangChain (node_modules), AutoGen (pip)
-
-API Keys
-  OPENAI_API_KEY            set       (sk-...redacted)
-  ANTHROPIC_API_KEY         set       (sk-ant-...redacted)
-  AZURE_OPENAI_API_KEY      not set
-
-Local Models
-  Ollama
-    llama3.2:latest         4.1 GB    running
-    mistral:7b              4.1 GB    available
-
-Dependencies
-  openai                    4.28.0
-  @anthropic-ai/sdk         0.24.3
-  langchain                 0.1.36
-
-Score: 87/100  (2 issues found)
-```
-
-### Watch mode
+## CLI
 
 ```bash
-npx @maiife-ai-pub/probe scan --watch
+# Full environment scan
+maiife-probe scan
+
+# Watch mode — re-scan on changes
+maiife-probe watch
+
+# Scan a specific directory
+maiife-probe scan --path /path/to/project
 ```
 
-### Output formats
+### Post results to Maiife
+
+If you have a Maiife account, point probe at your gateway to land findings in your governed substrate:
 
 ```bash
-npx @maiife-ai-pub/probe scan --format json
-npx @maiife-ai-pub/probe scan --format table
-npx @maiife-ai-pub/probe scan --format html > report.html
+export MAIIFE_GATEWAY=https://gateway.maiife.ai   # or your org's gateway
+export MAIIFE_API_KEY=mk-...                      # create in console → API Keys
+maiife-probe scan                                  # scans AND posts
 ```
 
-## MCP Server Usage
+Flags:
 
-Add `@maiife-ai-pub/probe` as an MCP server to Claude Desktop or Cursor so AI assistants can query your AI environment directly.
+- `--post-to <url>`  override `MAIIFE_GATEWAY`
+- `--key <mk-...>`  override `MAIIFE_API_KEY`
+- `--no-post`         run scan locally even if env is set
+- `--post-only`       silent POST; exit 1 on failure (for CI)
 
-### Claude Desktop (`~/Library/Application Support/Claude/claude_desktop_config.json`)
+Posting is fully optional. With no env + no flags, probe behaves exactly as a standalone CLI.
+
+---
+
+## MCP Server
+
+Add to your Claude Desktop config (`%APPDATA%\Claude\claude_desktop_config.json` on Windows, `~/Library/Application Support/Claude/claude_desktop_config.json` on macOS):
 
 ```json
 {
@@ -94,53 +68,25 @@ Add `@maiife-ai-pub/probe` as an MCP server to Claude Desktop or Cursor so AI as
 }
 ```
 
-### Cursor (`.cursor/mcp.json` in your project or `~/.cursor/mcp.json` globally)
+**Available tools:** `probe_scan`
 
-```json
-{
-  "mcpServers": {
-    "maiife-probe": {
-      "command": "npx",
-      "args": ["@maiife-ai-pub/probe", "mcp"]
-    }
-  }
-}
-```
-
-Once configured, your AI assistant can call tools like `probe_scan`, `probe_list_models`, and `probe_check_keys`.
-
-### Docker
-
-```bash
-docker run -i ghcr.io/sakthivelchan89/maiife-probe
-```
+---
 
 ## Programmatic API
 
-```typescript
-import { scan } from "@maiife-ai-pub/probe";
+```ts
+import { scanEnvironment } from "@maiife-ai-pub/probe";
 
-const result = await scan();
-
-console.log(result.extensions);   // IDE extensions found
-console.log(result.mcpServers);   // MCP server configurations
-console.log(result.apiKeys);      // API key presence (values redacted)
-console.log(result.models);       // Local models via Ollama / LM Studio
-console.log(result.score);        // Governance score 0-100
+const result = await scanEnvironment({ scope: "full", path: process.cwd() });
+console.log(result.ide);     // IDE extensions
+console.log(result.mcp);     // MCP servers
+console.log(result.agents);  // Agent frameworks
+console.log(result.keys);    // API keys found
+console.log(result.models);  // Local models (Ollama, vLLM)
 ```
 
-### Types
-
-```typescript
-import type { ScanResult, Extension, McpServer, ApiKeyStatus, LocalModel } from "@maiife-ai-pub/probe";
-```
-
-## Requirements
-
-- Node.js >= 18
+---
 
 ## License
 
-Apache 2.0 — see [LICENSE](./LICENSE)
-
-Copyright 2026 Maiife — [maiife.ai](https://maiife.ai)
+[Apache 2.0](../../LICENSE) — Built by [Maiife](https://maiife.ai)

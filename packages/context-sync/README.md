@@ -1,81 +1,52 @@
 # @maiife-ai-pub/context-sync
 
-Cross-Tool AI Memory Sync — maintain one source of truth for your AI context and sync it across Claude, Cursor, Copilot, and other tools automatically.
+> Cross-tool AI memory sync — one source of truth for your AI context, synced to Cursor Rules, CLAUDE.md, and MCP memory servers.
 
-Part of the [Maiife](https://maiife.ai) OSS toolkit for AI governance.
+[![npm](https://img.shields.io/npm/v/@maiife-ai-pub/context-sync)](https://www.npmjs.com/package/@maiife-ai-pub/context-sync)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue)](../../LICENSE)
+
+Part of the [Maiife AI Governance Toolkit](https://github.com/sakthivelchan89/scan_your_ai_toolkit).
+
+---
 
 ## Install
 
 ```bash
-npm install @maiife-ai-pub/context-sync
+npm install -g @maiife-ai-pub/context-sync
+# or run without installing
+npx @maiife-ai-pub/context-sync init
 ```
 
-Or use directly without installing:
+---
+
+## CLI
 
 ```bash
-npx @maiife-ai-pub/context-sync status
+# Initialise context store
+maiife-context-sync init
+
+# Add a context entry
+maiife-context-sync add "stack" "TypeScript, Next.js, Supabase"
+
+# List all entries
+maiife-context-sync list
+
+# Push context to all configured targets
+maiife-context-sync push
+
+# Check sync status across targets
+maiife-context-sync status
+
+# Show what has changed since last push
+maiife-context-sync diff
+
+# Remove an entry
+maiife-context-sync remove "stack"
 ```
 
-## CLI Usage
+---
 
-### Check sync status
-
-```bash
-npx @maiife-ai-pub/context-sync status
-```
-
-Example output:
-
-```
-Maiife Context Sync v0.1.0
-
-Sync Status
-
-  Context Store: ~/.maiife/context.json
-  Last updated: 2026-04-04 14:32
-
-  Tool Integrations
-    Claude Desktop      synced    2 min ago
-    Cursor              synced    2 min ago
-    VS Code Copilot     stale     last sync 3h ago
-    Continue            not configured
-
-  Context Entries: 14
-    project-overview    742 chars    all tools
-    tech-stack          318 chars    all tools
-    coding-style        201 chars    claude, cursor
-    team-norms          95 chars     all tools
-```
-
-### Add a context entry
-
-```bash
-npx @maiife-ai-pub/context-sync add project-overview "This is a pnpm monorepo with Fastify API and Next.js console..."
-```
-
-### Sync to all configured tools
-
-```bash
-npx @maiife-ai-pub/context-sync push
-```
-
-### Pull latest context from a tool
-
-```bash
-npx @maiife-ai-pub/context-sync pull --from claude
-```
-
-### Watch for changes and auto-sync
-
-```bash
-npx @maiife-ai-pub/context-sync watch
-```
-
-## MCP Server Usage
-
-Add `@maiife-ai-pub/context-sync` as an MCP server so AI assistants can read and write shared context entries.
-
-### Claude Desktop (`~/Library/Application Support/Claude/claude_desktop_config.json`)
+## MCP Server
 
 ```json
 {
@@ -88,58 +59,22 @@ Add `@maiife-ai-pub/context-sync` as an MCP server so AI assistants can read and
 }
 ```
 
-### Cursor (`.cursor/mcp.json` in your project or `~/.cursor/mcp.json` globally)
+**Available tools:** `context_sync_read`, `context_sync_update`, `context_sync_push`, `context_sync_status`
 
-```json
-{
-  "mcpServers": {
-    "maiife-context-sync": {
-      "command": "npx",
-      "args": ["@maiife-ai-pub/context-sync", "mcp"]
-    }
-  }
-}
-```
+---
 
-Once configured, your AI assistant can call tools like `context_get`, `context_set`, `context_list`, and `context_push`.
+## Sync Targets
 
-### Docker
+| Target | Description |
+|--------|-------------|
+| `cursor` | Writes to `.cursorrules` in the current project |
+| `claude` | Writes to `CLAUDE.md` in the current project |
+| `mcp-memory` | Pushes to a local MCP memory server via JSON-RPC |
 
-```bash
-docker run -i ghcr.io/sakthivelchan89/maiife-context-sync
-```
+Set `MCP_MEMORY_URL` to push to a remote MCP memory server.
 
-## Programmatic API
-
-```typescript
-import { getContext, setContext, syncAll } from "@maiife-ai-pub/context-sync";
-
-// Read a context entry
-const overview = await getContext("project-overview");
-console.log(overview.value);
-console.log(overview.lastUpdated);
-
-// Write a context entry
-await setContext("coding-style", "Use functional components, prefer const, no default exports.");
-
-// Push all context to configured tools
-const result = await syncAll();
-console.log(result.synced);   // tools successfully synced
-console.log(result.failed);   // tools that failed
-```
-
-### Types
-
-```typescript
-import type { ContextEntry, SyncResult, ToolIntegration } from "@maiife-ai-pub/context-sync";
-```
-
-## Requirements
-
-- Node.js >= 18
+---
 
 ## License
 
-Apache 2.0 — see [LICENSE](./LICENSE)
-
-Copyright 2026 Maiife — [maiife.ai](https://maiife.ai)
+[Apache 2.0](../../LICENSE) — Built by [Maiife](https://maiife.ai)

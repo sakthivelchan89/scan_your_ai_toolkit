@@ -6,6 +6,8 @@ import {
   createKeysScanner,
   createModelsScanner,
   createDepsScanner,
+  createToolsScanner,
+  createExtensionsScanner,
 } from "../core/scanners/index.js";
 import type { ScanConfig, ScanCategory, ScanScope, ProbeResult } from "../core/types.js";
 import type { RiskLevel } from "@maiife-ai-pub/shared";
@@ -17,12 +19,15 @@ const ALL_SCANNERS = {
   keys: createKeysScanner(),
   models: createModelsScanner(),
   deps: createDepsScanner(),
+  tools: createToolsScanner(),
+  extensions: createExtensionsScanner(),
 };
 
 function computeRiskLevel(result: ProbeResult): RiskLevel {
   const totalFindings =
     result.ide.length + result.mcp.length + result.agents.length +
-    result.keys.length + result.models.length + result.deps.length;
+    result.keys.length + result.models.length + result.deps.length +
+    result.tools.length + result.extensions.length;
 
   const hasHighRiskMCP = result.mcp.some((m) => m.risk === "high" || m.risk === "critical");
   const hasUnmanagedKeys = result.keys.some((k) => !k.managed);
@@ -60,7 +65,7 @@ export async function probeScan(params: {
 }> {
   const categories = params.categories
     ? (params.categories.split(",") as ScanCategory[])
-    : (["ide", "mcp", "agents", "keys", "models", "deps"] as ScanCategory[]);
+    : (["ide", "mcp", "agents", "keys", "models", "deps", "tools", "extensions"] as ScanCategory[]);
 
   const config: ScanConfig = {
     scope: (params.scope as ScanScope) ?? "full",
@@ -73,7 +78,8 @@ export async function probeScan(params: {
 
   const totalFindings =
     result.ide.length + result.mcp.length + result.agents.length +
-    result.keys.length + result.models.length + result.deps.length;
+    result.keys.length + result.models.length + result.deps.length +
+    result.tools.length + result.extensions.length;
 
   return {
     findings: result,

@@ -1,117 +1,73 @@
 # @maiife-ai-pub/ai-journal
 
-Personal AI Usage Diary — track how you use AI tools, record outcomes, and get weekly reflective insights.
+> Personal AI usage diary — track how you use AI tools across sessions and get reflective weekly insights.
 
-Part of the [Maiife](https://maiife.ai) OSS toolkit for AI governance.
+[![npm](https://img.shields.io/npm/v/@maiife-ai-pub/ai-journal)](https://www.npmjs.com/package/@maiife-ai-pub/ai-journal)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue)](../../LICENSE)
+
+Part of the [Maiife AI Governance Toolkit](https://github.com/sakthivelchan89/scan_your_ai_toolkit).
+
+---
 
 ## Install
 
 ```bash
-npm install @maiife-ai-pub/ai-journal
+npm install -g @maiife-ai-pub/ai-journal
+# or run without installing
+npx @maiife-ai-pub/ai-journal log --tool claude --task coding
 ```
 
-Or use directly without installing:
+---
+
+## CLI
 
 ```bash
-npx @maiife-ai-pub/ai-journal log "Used Claude to draft a product spec. Saved ~2h."
+# Log an AI interaction
+maiife-ai-journal log --tool claude --task coding --duration 30
+
+# Start a timed session
+maiife-ai-journal start --tool cursor
+
+# Stop the current session
+maiife-ai-journal stop
+
+# Get your weekly digest
+maiife-ai-journal digest
+
+# View patterns and insights
+maiife-ai-journal insights
 ```
 
-## CLI Usage
-
-### Log an AI interaction
-
-```bash
-npx @maiife-ai-pub/ai-journal log "Used GPT-4o to refactor the auth module. Result was good."
-```
-
-### View your journal
-
-```bash
-npx @maiife-ai-pub/ai-journal view
-```
-
-Example output:
-
-```
-Maiife AI Journal v0.1.0
-
-Your AI Usage — Last 7 Days
-
-  Mon Apr 01   3 interactions   ~4.5h saved
-    - Used Claude to write onboarding copy
-    - Used GPT-4o to review PR diff
-    - Used Gemini for competitive research
-
-  Tue Apr 02   1 interaction    ~1h saved
-    - Used Claude to debug Prisma migration
-
-  Wed Apr 03   5 interactions   ~6h saved
-    - Drafted pitch deck talking points
-    - Summarized 3 customer interviews
-    - ...
-
-  Weekly Summary
-    Total interactions:  9
-    Estimated time saved: 11.5h
-    Most used tool: Claude (6/9)
-    Top use case: Writing & drafting
-```
-
-### Weekly reflection
-
-```bash
-npx @maiife-ai-pub/ai-journal reflect
-```
-
-### Search past entries
-
-```bash
-npx @maiife-ai-pub/ai-journal search "refactor"
-```
-
-### Output formats
-
-```bash
-npx @maiife-ai-pub/ai-journal view --format json
-npx @maiife-ai-pub/ai-journal view --format html > journal.html
-```
+---
 
 ## Programmatic API
 
-```typescript
-import { addEntry, getEntries, weeklyReflection } from "@maiife-ai-pub/ai-journal";
+```ts
+import { logInteraction, generateDigest } from "@maiife-ai-pub/ai-journal";
 
-// Add a journal entry
-await addEntry({
-  tool: "claude",
-  task: "Drafted product spec",
-  outcome: "saved ~2h, high quality",
-  timeSavedHours: 2,
-});
+// Log an interaction
+logInteraction({ tool: "claude", task: "code-review", durationMinutes: 20 });
 
-// Retrieve entries
-const entries = await getEntries({ since: "2026-04-01" });
-console.log(entries.length);
-
-// Weekly reflection
-const reflection = await weeklyReflection();
-console.log(reflection.totalInteractions);
-console.log(reflection.estimatedTimeSaved);
-console.log(reflection.topTool);
+// Generate a digest for the last 7 days
+const digest = generateDigest(7);
+console.log(`Top tool: ${digest.topTool} (${digest.topToolMinutes} min)`);
 ```
 
-### Types
+Entries are stored locally at `~/.maiife/journal.json`.
 
-```typescript
-import type { JournalEntry, WeeklyReflection } from "@maiife-ai-pub/ai-journal";
+---
+
+## Export
+
+```ts
+import { exportEntries } from "@maiife-ai-pub/ai-journal";
+
+// Export last 30 days as CSV
+const csv = exportEntries("csv", new Date(Date.now() - 30 * 86400_000));
 ```
 
-## Requirements
-
-- Node.js >= 18
+---
 
 ## License
 
-Apache 2.0 — see [LICENSE](./LICENSE)
-
-Copyright 2026 Maiife — [maiife.ai](https://maiife.ai)
+[Apache 2.0](../../LICENSE) — Built by [Maiife](https://maiife.ai)

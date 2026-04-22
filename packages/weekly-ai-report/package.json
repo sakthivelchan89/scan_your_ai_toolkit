@@ -1,6 +1,6 @@
 {
   "name": "@maiife-ai-pub/weekly-ai-report",
-  "version": "0.1.4",
+  "version": "0.2.2",
   "description": "Your AI Week in Review — Spotify Wrapped for your AI usage, weekly",
   "type": "module",
   "main": "./dist/index.js",
